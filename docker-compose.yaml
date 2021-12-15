@@ -1,0 +1,17 @@
+version: '3.2'
+
+services:
+
+  iquiz-mariadb:
+    image: mariadb:10.5.4
+    container_name: iquiz-mariadb
+    hostname: iquiz-mariadb
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3316:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    volumes:
+      - ./configuration/iquiz-mariadb-init.sql:/docker-entrypoint-initdb.d/init.sql

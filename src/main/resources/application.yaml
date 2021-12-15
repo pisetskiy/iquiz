@@ -1,0 +1,53 @@
+server:
+  port: 8180
+  forward-headers-strategy: native
+  servlet:
+    context-path:
+    encoding:
+      charset: UTF-8
+      force-response: true
+
+spring:
+  application:
+    name: iquiz-rest-api
+  main:
+    banner-mode: off
+  datasource:
+    database:
+      host: localhost
+      port: 3316
+      name: iquiz
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${spring.datasource.database.host}:${spring.datasource.database.port}/${spring.datasource.database.name}?serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: iquiz_app_user
+    password: iquiz_app_password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+        jdbc.lob.non_contextual_creation: true
+    show-sql: false
+  flyway:
+    sql-migration-prefix: ''
+    baseline-on-migrate: true
+    out-of-order: true
+  jackson:
+    default-property-inclusion: non_null
+    property-naming-strategy: LOWER_CAMEL_CASE
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+  mvc:
+    log-request-details: false
+    log-resolved-exception: false
+
+logging:
+  pattern:
+    console: '%d %level [%thread] %logger{25} [%file:%line] - %msg%n'
+  level:
+    root: info
+    ru.netris.ihome: INFO
+    org.springframework.web: INFO
