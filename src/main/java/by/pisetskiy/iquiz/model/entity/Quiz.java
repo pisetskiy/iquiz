@@ -14,4 +14,5 @@ import lombok.ToString;
 public class Quiz extends BaseEntity {
 
     private String title;
+    private Boolean isActive;
 }
