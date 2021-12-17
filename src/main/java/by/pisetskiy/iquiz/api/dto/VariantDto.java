@@ -1,19 +1,15 @@
-package by.pisetskiy.iquiz.model.entity;
+package by.pisetskiy.iquiz.api.dto;
 
-import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-@Entity
-@SuperBuilder
-public class Variant extends BaseEntity {
+@ToString
+public class VariantDto extends BaseDto {
 
     private String value;
     private Boolean isTrue;

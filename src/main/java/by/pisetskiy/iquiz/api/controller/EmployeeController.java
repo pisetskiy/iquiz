@@ -1,43 +1,43 @@
 package by.pisetskiy.iquiz.api.controller;
 
 import static by.pisetskiy.iquiz.api.RestEndpoints.API_PREFIX;
-import static by.pisetskiy.iquiz.api.RestEndpoints.QUIZZES;
+import static by.pisetskiy.iquiz.api.RestEndpoints.EMPLOYEES;
 import static by.pisetskiy.iquiz.util.QuizUtil.map;
 
-import by.pisetskiy.iquiz.api.dto.QuizDto;
-import by.pisetskiy.iquiz.api.mapper.QuizMapper;
-import by.pisetskiy.iquiz.api.request.QuizRequest;
-import by.pisetskiy.iquiz.service.QuizService;
+import by.pisetskiy.iquiz.api.dto.EmployeeDto;
+import by.pisetskiy.iquiz.api.mapper.EmployeeMapper;
+import by.pisetskiy.iquiz.api.request.EmployeeRequest;
+import by.pisetskiy.iquiz.service.EmployeeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(API_PREFIX + QUIZZES)
+@RequestMapping(API_PREFIX + EMPLOYEES)
 @RequiredArgsConstructor
-public class QuizController implements BaseController<QuizDto, QuizRequest> {
+public class EmployeeController implements BaseController<EmployeeDto, EmployeeRequest> {
 
-    private final QuizService service;
-    private final QuizMapper mapper;
+    private final EmployeeService service;
+    private final EmployeeMapper mapper;
 
     @Override
-    public List<QuizDto> findAll() {
+    public List<EmployeeDto> findAll() {
         return map(service.findAll(), mapper::toListDto);
     }
 
     @Override
-    public QuizDto findById(Long id) {
+    public EmployeeDto findById(Long id) {
         return mapper.toDetailDto(service.findById(id));
     }
 
     @Override
-    public QuizDto create(QuizRequest request) {
+    public EmployeeDto create(EmployeeRequest request) {
         return mapper.toDetailDto(service.create(request));
     }
 
     @Override
-    public QuizDto update(Long id, QuizRequest request) {
+    public EmployeeDto update(Long id, EmployeeRequest request) {
         return mapper.toDetailDto(service.update(id, request));
     }
 }

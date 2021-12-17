@@ -1,8 +1,8 @@
 CREATE TABLE job_position
 (
     id   BIGINT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
 
-    UNIQUE unique_name (name)
+    UNIQUE unique_title (title)
 
 ) ENGINE = InnoDB;

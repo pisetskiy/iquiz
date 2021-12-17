@@ -1,7 +1,5 @@
 package by.pisetskiy.iquiz.api.dto;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +9,12 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class QuizDto extends BaseDto {
+public class EmployeeDto {
 
-    private String title;
-    private List<QuestionDto> questions = new ArrayList<>();
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String email;
+
+    private PositionDto position;
 }

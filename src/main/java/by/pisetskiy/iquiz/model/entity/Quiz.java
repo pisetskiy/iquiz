@@ -1,22 +1,25 @@
 package by.pisetskiy.iquiz.model.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @Entity
+@SuperBuilder
 public class Quiz extends BaseEntity {
 
     private String title;
@@ -26,7 +29,8 @@ public class Quiz extends BaseEntity {
             joinColumns = @JoinColumn(name = "quiz_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id"))
     @ToString.Exclude
-    private Set<Question> questions = new HashSet<>();
+    @Builder.Default
+    private List<Question> questions = new ArrayList<>();
 
     public void addQuestion(Question question) {
         this.questions.add(question);
