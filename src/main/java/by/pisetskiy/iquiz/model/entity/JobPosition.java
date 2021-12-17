@@ -17,22 +17,22 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Entity
-public class Quiz extends BaseEntity {
+public class JobPosition extends BaseEntity {
 
-    private String title;
+    private String name;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "quiz_question",
-            joinColumns = @JoinColumn(name = "quiz_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id"))
+    @JoinTable(name = "job_position_quiz",
+            joinColumns = @JoinColumn(name = "job_position_id"),
+            inverseJoinColumns = @JoinColumn(name = "quiz_id"))
     @ToString.Exclude
-    private Set<Question> questions = new HashSet<>();
+    private Set<Quiz> quizes = new HashSet<>();
 
-    public void addQuestion(Question question) {
-        this.questions.add(question);
+    public void addQuiz(Quiz quiz) {
+        this.quizes.add(quiz);
     }
 
-    public void removeQuestion(Question question) {
-        this.questions.remove(question);
+    public void removeQuiz(Quiz quiz) {
+        this.quizes.remove(quiz);
     }
 }
