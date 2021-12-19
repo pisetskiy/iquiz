@@ -1,7 +1,7 @@
 package by.pisetskiy.iquiz.service;
 
-import static by.pisetskiy.iquiz.util.QuizUtil.map;
-import static by.pisetskiy.iquiz.util.QuizUtil.mapper;
+import static by.pisetskiy.iquiz.util.IQuizUtil.map;
+import static by.pisetskiy.iquiz.util.IQuizUtil.mapper;
 
 import by.pisetskiy.iquiz.api.request.EmployeeRequest;
 import by.pisetskiy.iquiz.model.entity.Employee;

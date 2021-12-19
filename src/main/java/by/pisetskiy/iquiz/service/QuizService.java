@@ -1,7 +1,7 @@
 package by.pisetskiy.iquiz.service;
 
-import static by.pisetskiy.iquiz.util.QuizUtil.map;
-import static by.pisetskiy.iquiz.util.QuizUtil.mapper;
+import static by.pisetskiy.iquiz.util.IQuizUtil.map;
+import static by.pisetskiy.iquiz.util.IQuizUtil.mapper;
 
 import by.pisetskiy.iquiz.api.request.QuizRequest;
 import by.pisetskiy.iquiz.model.entity.Question;
@@ -33,6 +33,7 @@ public class QuizService implements BaseService<Quiz, QuizRequest> {
     public Quiz create(QuizRequest request) {
         var quiz = Quiz.builder()
                 .title(request.getTitle())
+                .timeLimit(request.getTimeLimit())
                 .questions(map(request.getQuestions(), mapper(Question::new)))
                 .build();
         return repository.save(quiz);
@@ -42,6 +43,7 @@ public class QuizService implements BaseService<Quiz, QuizRequest> {
     public Quiz update(Long id, QuizRequest request) {
         var quiz = repository.getById(id);
         quiz.setTitle(request.getTitle());
+        quiz.setTimeLimit(request.getTimeLimit());
         quiz.setQuestions(map(request.getQuestions(), mapper(Question::new)));
         return repository.save(quiz);
     }

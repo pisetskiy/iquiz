@@ -3,7 +3,7 @@ package by.pisetskiy.iquiz.api.controller;
 import static by.pisetskiy.iquiz.api.RestEndpoints.API_PREFIX;
 import static by.pisetskiy.iquiz.api.RestEndpoints.ID;
 import static by.pisetskiy.iquiz.api.RestEndpoints.POSITIONS;
-import static by.pisetskiy.iquiz.util.QuizUtil.map;
+import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 
 import by.pisetskiy.iquiz.api.dto.PositionDto;
 import by.pisetskiy.iquiz.api.mapper.PositionMapper;

@@ -1,6 +1,9 @@
 package by.pisetskiy.iquiz.util;
 
 import by.pisetskiy.iquiz.model.entity.BaseEntity;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -9,7 +12,7 @@ import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class QuizUtil {
+public class IQuizUtil {
 
     public static <T, U> List<U> map(List<T> elements, Function<T, U> mapper) {
         return elements.stream().map(mapper).collect(Collectors.toList());
@@ -29,5 +32,13 @@ public class QuizUtil {
             entity.setId(id);
             return entity;
         };
+    }
+
+    public static LocalDateTime toDateTime(String dateTime) {
+        return LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    public static String formatDateTime(LocalDateTime dateTime) {
+        return dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }

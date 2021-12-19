@@ -1,6 +1,6 @@
 package by.pisetskiy.iquiz.service;
 
-import static by.pisetskiy.iquiz.util.QuizUtil.map;
+import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 
 import by.pisetskiy.iquiz.api.request.QuestionRequest;
 import by.pisetskiy.iquiz.api.request.VariantRequest;

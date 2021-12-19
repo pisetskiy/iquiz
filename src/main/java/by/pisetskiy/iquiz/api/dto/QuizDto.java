@@ -14,5 +14,6 @@ import lombok.ToString;
 public class QuizDto extends BaseDto {
 
     private String title;
+    private Integer timeLimit;
     private List<QuestionDto> questions = new ArrayList<>();
 }

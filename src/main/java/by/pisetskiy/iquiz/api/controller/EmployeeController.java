@@ -2,7 +2,7 @@ package by.pisetskiy.iquiz.api.controller;
 
 import static by.pisetskiy.iquiz.api.RestEndpoints.API_PREFIX;
 import static by.pisetskiy.iquiz.api.RestEndpoints.EMPLOYEES;
-import static by.pisetskiy.iquiz.util.QuizUtil.map;
+import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 
 import by.pisetskiy.iquiz.api.dto.EmployeeDto;
 import by.pisetskiy.iquiz.api.mapper.EmployeeMapper;

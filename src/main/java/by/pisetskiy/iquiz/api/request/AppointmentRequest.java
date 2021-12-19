@@ -1,6 +1,5 @@
 package by.pisetskiy.iquiz.api.request;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +9,9 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class QuizRequest {
+public class AppointmentRequest {
 
-    private String title;
-    private Integer timeLimit;
-    private List<Long> questions;
+    private Long employee;
+    private Long quiz;
+    private String deadline;
 }
