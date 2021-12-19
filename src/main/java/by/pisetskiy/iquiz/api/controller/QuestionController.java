@@ -26,25 +26,21 @@ public class QuestionController implements BaseController<QuestionDto, QuestionR
     private final QuestionMapper mapper;
 
     @Override
-    @GetMapping
     public List<QuestionDto> findAll() {
         return map(service.findAll(), mapper::toListDto);
     }
 
     @Override
-    @GetMapping(ID)
     public QuestionDto findById(@PathVariable Long id) {
         return mapper.toDetailDto(service.findById(id));
     }
 
     @Override
-    @PostMapping
     public QuestionDto create(QuestionRequest request) {
         return mapper.toDetailDto(service.create(request));
     }
 
     @Override
-    @PostMapping(ID)
     public QuestionDto update(@PathVariable Long id, QuestionRequest request) {
         return mapper.toDetailDto(service.update(id, request));
     }

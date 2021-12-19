@@ -1,6 +1,6 @@
 CREATE TABLE job_position_quiz
 (
-    id              BIGINT PRIMARY KEY,
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     job_position_id BIGINT NOT NULL,
     quiz_id         BIGINT NOT NULL,
 

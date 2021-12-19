@@ -1,6 +1,6 @@
 CREATE TABLE quiz_question
 (
-    id          BIGINT PRIMARY KEY,
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     quiz_id     BIGINT NOT NULL,
     question_id BIGINT NOT NULL,
 

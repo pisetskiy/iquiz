@@ -1,6 +1,6 @@
 CREATE TABLE quiz
 (
-    id         BIGINT PRIMARY KEY,
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     title      VARCHAR(255) NOT NULL,
     time_limit SMALLINT     NOT NULL,
 

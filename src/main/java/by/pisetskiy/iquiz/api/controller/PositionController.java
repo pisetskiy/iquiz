@@ -26,28 +26,24 @@ public class PositionController implements BaseController<PositionDto, PositionR
     private final PositionMapper mapper;
 
     @Override
-    @GetMapping
     public List<PositionDto> findAll() {
         var positions = service.findAll();
         return map(positions, mapper::toListDto);
     }
 
     @Override
-    @GetMapping(ID)
     public PositionDto findById(@PathVariable Long id) {
         var position = service.findById(id);
         return mapper.toDetailDto(position);
     }
 
     @Override
-    @PostMapping
     public PositionDto create(PositionRequest request) {
         var position = service.create(request);
         return mapper.toDetailDto(position);
     }
 
     @Override
-    @PostMapping(ID)
     public PositionDto update(@PathVariable Long id, PositionRequest request) {
         var position = service.update(id, request);
         return mapper.toDetailDto(position);

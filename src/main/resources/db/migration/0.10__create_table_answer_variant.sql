@@ -1,6 +1,6 @@
 CREATE TABLE answer_variant
 (
-    id         BIGINT PRIMARY KEY,
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     answer_id  BIGINT NOT NULL,
     variant_id BIGINT NOT NULL,
 

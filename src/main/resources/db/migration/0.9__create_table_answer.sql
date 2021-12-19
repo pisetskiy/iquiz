@@ -1,6 +1,6 @@
 CREATE TABLE answer
 (
-    id             BIGINT PRIMARY KEY,
+    id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     appointment_id BIGINT  NOT NULL,
     question_id    BIGINT  NOT NULL,
     answer_date    TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),

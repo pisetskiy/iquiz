@@ -1,6 +1,6 @@
 CREATE TABLE variant
 (
-    id          BIGINT PRIMARY KEY,
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     question_id BIGINT      NOT NULL,
     value       VARCHAR(32) NOT NULL,
     is_true     BOOLEAN     NOT NULL,

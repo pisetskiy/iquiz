@@ -1,6 +1,6 @@
 CREATE TABLE appointment
 (
-    id          BIGINT PRIMARY KEY,
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     employee_id BIGINT       NOT NULL,
     quiz_id     BIGINT       NOT NULL,
     state       VARCHAR(16)  NOT NULL,
