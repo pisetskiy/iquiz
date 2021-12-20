@@ -1,5 +1,6 @@
 package by.pisetskiy.iquiz.config;
 
+import by.pisetskiy.iquiz.model.entity.UserRole;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +23,11 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
+        http.authorizeRequests((requests) -> requests.anyRequest()
+                .hasAuthority(UserRole.ADMIN.getAuthority()));
         http.formLogin();
         http.logout();
         http.cors();
+        http.csrf().disable();
     }
 }

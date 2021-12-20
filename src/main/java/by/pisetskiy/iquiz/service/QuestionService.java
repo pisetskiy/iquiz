@@ -37,8 +37,9 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         var question = Question.builder()
                 .content(request.getContent())
                 .type(QuestionType.valueOf(request.getType()))
-                .variants(map(request.getVariants(), this::variant))
                 .build();
+        map(request.getVariants(), this::variant).forEach(question::addVariant);
+
         return repository.save(question);
     }
 
@@ -47,7 +48,8 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         var question = repository.getById(id);
         question.setContent(request.getContent());
         question.setType(QuestionType.valueOf(request.getType()));
-        question.setVariants(map(request.getVariants(), this::variant));
+        question.getVariants().forEach(question::removeVariant);
+        map(request.getVariants(), this::variant).forEach(question::addVariant);
         return repository.save(question);
     }
 

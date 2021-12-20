@@ -3,6 +3,7 @@ package by.pisetskiy.iquiz.api.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ public interface BaseController<D, R> {
     D findById(@PathVariable Long id);
 
     @PostMapping
-    D create(R request);
+    D create(@RequestBody R request);
 
     @PostMapping(ID)
-    D update(@PathVariable Long id, R request);
+    D update(@PathVariable Long id, @RequestBody R request);
 }

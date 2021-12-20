@@ -27,17 +27,18 @@ public class Question extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QuestionType type;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "question_id")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
     private List<Variant> variants = new ArrayList<>();
 
     public void addVariant(Variant variant) {
         this.variants.add(variant);
+        variant.setQuestion(this);
     }
 
     public void removeVariant(Variant variant) {
         this.variants.remove(variant);
+        variant.setQuestion(null);
     }
 }

@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class QuestionService {
 
-  private readonly api = environment.api_prefix + "/questions;"
+  private readonly api = environment.api_prefix + "/questions";
 
   constructor(private http: HttpClient) { }
 
