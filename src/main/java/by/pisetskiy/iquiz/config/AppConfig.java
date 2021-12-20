@@ -2,9 +2,12 @@ package by.pisetskiy.iquiz.config;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -22,5 +25,6 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
         http.formLogin();
         http.logout();
+        http.cors();
     }
 }

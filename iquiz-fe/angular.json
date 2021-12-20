@@ -75,7 +75,8 @@
               "browserTarget": "iquiz-fe:build:production"
             },
             "development": {
-              "browserTarget": "iquiz-fe:build:development"
+              "browserTarget": "iquiz-fe:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'iquiz-fe';
+
+  links = [
+    { title: 'Вопросы', fragment: 'questions'},
+    { title: 'Тесты', fragment: 'quizzes'},
+    { title: 'Сотрудники', fragment: 'employees'},
+    { title: 'Должности', fragment: 'positions'},
+  ];
+
+  constructor(public route: ActivatedRoute) {
+  }
 }
