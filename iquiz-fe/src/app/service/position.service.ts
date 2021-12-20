@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PositionService {
 
-  private readonly api = environment.backed_host + environment.api_prefix + '/positions';
+  private readonly api = environment.api_prefix + '/positions';
 
   constructor(private http: HttpClient) {
   }
@@ -19,7 +19,7 @@ export class PositionService {
   }
 
   find(id: number): Observable<Position> {
-    return this.http.get<Position>(this.api + `/${id}`, {withCredentials: true});
+    return this.http.get<Position>(this.api + `/${id}`);
   }
 
   create(position: Position): Observable<Position> {

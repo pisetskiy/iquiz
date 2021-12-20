@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  backed_host: '',
   api_prefix: '/api/v1',
 };
 

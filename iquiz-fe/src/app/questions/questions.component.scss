@@ -1,0 +1,22 @@
+.questions {
+  padding-top: 15px;
+
+  &__header {
+    display: flex;
+
+    .form-inline {
+      margin-left: 20px;
+    }
+  }
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+.modal {
+  &-header, &-footer {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
