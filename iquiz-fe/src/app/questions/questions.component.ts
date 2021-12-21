@@ -11,7 +11,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { QuestionService } from '../service/question.service';
-import { finalize } from 'rxjs';
+import { BehaviorSubject, combineLatest, finalize, map, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-questions',
@@ -66,44 +66,47 @@ export class QuestionsComponent implements OnInit {
 
   public readonly trackByFn = (index: number, question: Question) => question.id;
 
-  load: boolean;
-  modalTitle: string;
-  validationErrors: string[];
-  question: FormGroup;
-  variants: FormArray;
-  modalRef: NgbModalRef | null;
-  questions: Question[];
+  load: boolean = false;
+  modalTitle: string = QuestionsComponent.ADD_MODAL_TITLE;
+  validationErrors: string[] = [];
+  modalRef: NgbModalRef | null = null;
+  questionForm: FormGroup;
+  variantsForms: FormArray;
+
+  questions$: Subject<Question[]> = new BehaviorSubject<Question[]>([]);
+  query$: Subject<string> = new BehaviorSubject<string>('');
+  filteredQuestions$ = combineLatest([this.questions$, this.query$])
+    .pipe(map((data: any[]) => this.filterQuestionsByQuery(data[0], data[1])));
 
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
     private service: QuestionService,
   ) {
-    this.load = false;
-    this.modalTitle = QuestionsComponent.ADD_MODAL_TITLE;
-    this.validationErrors = [];
-    this.variants = this.fb.array([]);
-    this.question = this.fb.group({
+    this.variantsForms = this.fb.array([]);
+    this.questionForm = this.fb.group({
       'id': this.fb.control(null),
       'content': this.fb.control(''),
       'type': this.fb.control('SINGLE'),
-      'variants': this.variants,
+      'variants': this.variantsForms,
     }, {
       validators: QuestionsComponent.QUESTION_VALIDATOR
     });
-    this.modalRef = null;
-    this.questions = [];
   }
 
   ngOnInit(): void {
     this.loadQuestions();
   }
 
+  filterQuestions(query: string) {
+    this.query$.next(query);
+  }
+
   loadQuestions(): void {
     this.load = true;
     this.service.findAll()
       .pipe(finalize(() => this.load = false))
-      .subscribe(questions => this.questions = questions);
+      .subscribe(questions => this.questions$.next(questions));
   }
 
   addQuestion(content: TemplateRef<any>): void {
@@ -128,32 +131,32 @@ export class QuestionsComponent implements OnInit {
 
   addVariant(): void {
     let variant = {} as Variant;
-    this.variants?.push(this.buildVariantForm(variant));
+    this.variantsForms?.push(this.buildVariantForm(variant));
   }
 
   removeVariant(index: number): void {
-    this.variants?.removeAt(index);
+    this.variantsForms?.removeAt(index);
   }
 
   validateAndSave(): void {
-    if (this.question.status === 'VALID') {
+    if (this.questionForm.status === 'VALID') {
       this.validationErrors = [];
-      let question = this.question.value;
+      let question = this.questionForm.value;
       this.load = true;
       (question.id ? this.service.update(question.id, question) : this.service.create(question))
         .pipe(finalize(() => this.load = false))
         .subscribe(() => this.modalRef?.close('SAVED'));
     } else {
-      this.validationErrors = Object.values(this.question.errors as {});
+      this.validationErrors = Object.values(this.questionForm.errors as {});
     }
   }
 
   private openQuestionForm(value: Question, title: string, content: TemplateRef<any>) {
     this.modalTitle = title;
     this.validationErrors = [];
-    this.variants = this.fb.array(value.variants.map(variant => this.buildVariantForm(variant)));
-    this.question.setControl('variants', this.variants);
-    this.question.setValue(value);
+    this.variantsForms = this.fb.array(value.variants.map(variant => this.buildVariantForm(variant)));
+    this.questionForm.setControl('variants', this.variantsForms);
+    this.questionForm.setValue(value);
     this.modalRef = this.modalService.open(content);
     this.modalRef.result.then(() => this.loadQuestions(), () => {});
   }
@@ -164,6 +167,15 @@ export class QuestionsComponent implements OnInit {
       'value': this.fb.control(variant.value || ''),
       'isTrue': this.fb.control(variant.isTrue || true)
     });
+  }
+
+  private filterQuestionsByQuery(questions: Question[], query: string): Question[] {
+    if (query) {
+      let regexp = new RegExp(query, 'i');
+      return questions.filter(q => regexp.test(q.content));
+    }
+
+    return questions;
   }
 
 }

@@ -11,6 +11,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CommonModule } from '@angular/common';
     PositionsComponent,
     EmployeesComponent,
     QuestionsComponent,
-    QuizzesComponent
+    QuizzesComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

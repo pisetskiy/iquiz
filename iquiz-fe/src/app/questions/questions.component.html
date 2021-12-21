@@ -4,20 +4,13 @@
       <button type="button" class="btn btn-primary" (click)="addQuestion(question_form)">Создать</button>
     </div>
 
-    <form class="form-inline">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Поиск вопроса">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="submit">Найти</button>
-        </div>
-      </div>
-    </form>
+    <app-search placeholder="Поиск вопроса" (search)="filterQuestions($event)"></app-search>
   </div>
 
   <div class="questions__body">
     <div class="container-fluid">
       <div class="row">
-        <div *ngFor="let question of questions; index as i; trackBy: trackByFn"
+        <div *ngFor="let question of filteredQuestions$ | async; index as i; trackBy: trackByFn"
              class="questions__card col-lg-6 col-xl-4 col-xxl-3">
           <div class="card text-dark bg-light">
             <div class="card-header">Задание № {{ question.id }} </div>
@@ -48,7 +41,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="question">
+    <form [formGroup]="questionForm">
       <input type="hidden" formControlName="id">
       <div class="form-group">
         <textarea formControlName="content" class="form-control" id="content" cols="30" rows="5"></textarea>
@@ -67,7 +60,7 @@
         <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addVariant()">Добавить вариант ответа</button>
       </div>
       <ng-container formArrayName="variants">
-        <div class="form-group" *ngFor="let variant of variants?.controls; index as i;" formGroupName="{{i}}">
+        <div class="form-group" *ngFor="let variantForm of variantsForms?.controls; index as i;" formGroupName="{{i}}">
           <div class="input-group input-group-sm">
             <div class="input-group-prepend">
               <div class="input-group-text">

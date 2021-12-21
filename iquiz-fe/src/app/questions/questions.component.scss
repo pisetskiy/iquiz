@@ -7,8 +7,8 @@
   &__header {
     display: flex;
 
-    .form-inline {
-      margin-left: 1rem;
+    :not(:last-child) {
+      margin-right: 1rem;
     }
   }
 
