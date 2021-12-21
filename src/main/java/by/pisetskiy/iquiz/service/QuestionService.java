@@ -8,6 +8,8 @@ import by.pisetskiy.iquiz.model.entity.Question;
 import by.pisetskiy.iquiz.model.entity.QuestionType;
 import by.pisetskiy.iquiz.model.entity.Variant;
 import by.pisetskiy.iquiz.model.repository.QuestionRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
                 .content(request.getContent())
                 .type(QuestionType.valueOf(request.getType()))
                 .build();
-        map(request.getVariants(), this::variant).forEach(question::addVariant);
+        question.addVariants(map(request.getVariants(), this::variant));
 
         return repository.save(question);
     }
@@ -48,13 +50,14 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         var question = repository.getById(id);
         question.setContent(request.getContent());
         question.setType(QuestionType.valueOf(request.getType()));
-        question.getVariants().forEach(question::removeVariant);
-        map(request.getVariants(), this::variant).forEach(question::addVariant);
+        question.removeVariants(new ArrayList<>(question.getVariants()));
+        question.addVariants(map(request.getVariants(), this::variant));
         return repository.save(question);
     }
 
     private Variant variant(VariantRequest request) {
         return Variant.builder()
+                .id(request.getId())
                 .value(request.getValue())
                 .isTrue(request.getIsTrue())
                 .build();

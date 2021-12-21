@@ -32,13 +32,13 @@ public class Question extends BaseEntity {
     @Builder.Default
     private List<Variant> variants = new ArrayList<>();
 
-    public void addVariant(Variant variant) {
-        this.variants.add(variant);
-        variant.setQuestion(this);
+    public void addVariants(List<Variant> variants) {
+        this.variants.addAll(variants);
+        variants.forEach(variant -> variant.setQuestion(this));
     }
 
-    public void removeVariant(Variant variant) {
-        this.variants.remove(variant);
-        variant.setQuestion(null);
+    public void removeVariants(List<Variant> variants) {
+        this.variants.removeAll(variants);
+        variants.forEach(variant -> variant.setQuestion(null));
     }
 }

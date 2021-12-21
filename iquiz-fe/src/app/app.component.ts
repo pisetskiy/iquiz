@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AppComponent {
 
   links = [
-    { title: 'Вопросы', fragment: 'questions'},
+    { title: 'Задания', fragment: 'questions'},
     { title: 'Тесты', fragment: 'quizzes'},
     { title: 'Сотрудники', fragment: 'employees'},
     { title: 'Должности', fragment: 'positions'},

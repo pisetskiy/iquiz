@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class QuizRequest {
+public class QuizRequest extends BaseRequest {
 
     private String title;
     private Integer timeLimit;

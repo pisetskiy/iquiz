@@ -1,5 +1,5 @@
-<div class="container-fluid questions">
-  <div class="questions__header">
+<div class="questions">
+  <div class="container-fluid questions__header">
     <div>
       <button type="button" class="btn btn-primary" (click)="addQuestion(question_form)">Создать</button>
     </div>
@@ -12,6 +12,31 @@
         </div>
       </div>
     </form>
+  </div>
+
+  <div class="questions__body">
+    <div class="container-fluid">
+      <div class="row">
+        <div *ngFor="let question of questions; index as i; trackBy: trackByFn"
+             class="questions__card col-lg-6 col-xl-4 col-xxl-3">
+          <div class="card text-dark bg-light">
+            <div class="card-header">Задание № {{ question.id }} </div>
+            <div class="card-body ">
+              <h5 class="card-title">{{ question.type === 'SINGLE' ? 'Один верный ответ' : 'Несколько верных ответов' }}</h5>
+              <div class="card-text">
+                <p class="limited-lines">
+                  {{ question.content }}
+                </p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="button" (click)="updateQuestion(question.id, question_form)" [disabled]="load"
+                      class="btn btn-sm btn-outline-primary">Изменить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -50,6 +75,7 @@
               </div>
             </div>
             <input type="text" formControlName="value" class="form-control" placeholder="Вариант ответа">
+            <input type="hidden" formControlName="id">
             <div class="input-group-append">
               <button class="btn btn-outline-danger" type="button" (click)="removeVariant(i)">Удалить</button>
             </div>
@@ -58,15 +84,11 @@
       </ng-container>
     </form>
 
-    <ul class="list-unstyled is-invalid" *ngIf="validationErrors.length">
-      <li class="invalid-feedback" *ngFor="let error of validationErrors"> {{ error }}</li>
+    <ul class="list-unstyled invalid-feedback" *ngIf="validationErrors.length">
+      <li *ngFor="let error of validationErrors"> {{ error }}</li>
     </ul>
-
-    {{ question.value | json }}
-    <br>
-    {{ question.status }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="validateAndSave()">Сохранить</button>
+    <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndSave()">Сохранить</button>
   </div>
 </ng-template>

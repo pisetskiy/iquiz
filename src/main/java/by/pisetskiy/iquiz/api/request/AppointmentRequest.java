@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class AppointmentRequest {
+public class AppointmentRequest extends BaseRequest {
 
     private Long employee;
     private Long quiz;

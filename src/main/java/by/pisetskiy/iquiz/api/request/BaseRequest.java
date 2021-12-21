@@ -6,8 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @ToString
-public class VariantRequest extends BaseRequest {
+public class BaseRequest {
 
-    private String value;
-    private Boolean isTrue;
+    private Long id;
 }

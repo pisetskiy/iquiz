@@ -1,12 +1,23 @@
 .questions {
-  padding-top: 15px;
+  height: 100%;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
 
   &__header {
     display: flex;
 
     .form-inline {
-      margin-left: 20px;
+      margin-left: 1rem;
     }
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__card {
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -19,4 +30,21 @@ textarea.form-control {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.card-text {
+  height: 4rem;
+}
+
+.limited-lines {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
 }

@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class EmployeeRequest {
+public class EmployeeRequest extends BaseRequest {
 
     private String firstName;
     private String middleName;
