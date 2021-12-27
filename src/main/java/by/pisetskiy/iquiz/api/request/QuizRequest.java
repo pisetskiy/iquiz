@@ -1,5 +1,6 @@
 package by.pisetskiy.iquiz.api.request;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,5 @@ public class QuizRequest extends BaseRequest {
 
     private String title;
     private Integer timeLimit;
-    private List<Long> questions;
+    private List<Long> questions = new ArrayList<>();
 }

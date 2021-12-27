@@ -1,1 +1,60 @@
-<p>quizzes works!</p>
+<div class="quizzes">
+  <div class="container-fluid quizzes__header">
+    <div>
+      <button type="button" class="btn btn-primary" (click)="addQuiz(quiz_form)">Создать</button>
+    </div>
+
+    <app-search placeholder="Поиск вопроса" (search)="filterQuizzes($event)"></app-search>
+  </div>
+
+  <div class="quizzes__body">
+    <div class="container-fluid">
+      <div class="row">
+        <div *ngFor="let quiz of filteredQuizzes$ | async; index as i; trackBy: trackByFn"
+             class="questions__card col-lg-6">
+          <div class="card text-dark bg-light">
+            <div class="card-header">Тест № {{ quiz.id }} </div>
+            <div class="card-body ">
+              <h5 class="card-title limited-lines">{{ quiz.title }}</h5>
+              <div class="card-text">Вопросов: {{ quiz.questions?.length || 0 }}</div>
+              <div class="card-text">Ограничение по времени: {{ quiz.timeLimit }} мин.</div>
+            </div>
+            <div class="card-footer">
+              <button type="button" (click)="updateQuiz(quiz.id, quiz_form)" [disabled]="load"
+                      class="btn btn-sm btn-outline-primary">Изменить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #quiz_form let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalTitle}}</h4>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')">
+      <span>&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="quizForm">
+      <input type="hidden" formControlName="id">
+      <div class="form-group">
+        <label for="title">Название теста</label>
+        <input type="text" id="title" formControlName="title" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="timeLimit" class="form-label">Ограничение по времени: {{ quizForm.value?.timeLimit }} мин.</label>
+        <input id="timeLimit" type="range" formControlName="timeLimit" class="custom-range" min="10" max="60" step="5">
+      </div>
+    </form>
+
+    <ul class="list-unstyled invalid-feedback" *ngIf="validationErrors.length">
+      <li *ngFor="let error of validationErrors"> {{ error }}</li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndSave()">Сохранить</button>
+  </div>
+</ng-template>
