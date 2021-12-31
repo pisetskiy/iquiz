@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { QuestionService } from '../service/question.service';
 import { BehaviorSubject, combineLatest, finalize, map, Subject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-questions',
@@ -72,6 +73,7 @@ export class QuestionsComponent implements OnInit {
   modalRef: NgbModalRef | null = null;
   questionForm: FormGroup;
   variantsForms: FormArray;
+  quizId: number = -1;
 
   questions$: Subject<Question[]> = new BehaviorSubject<Question[]>([]);
   query$: Subject<string> = new BehaviorSubject<string>('');
@@ -82,10 +84,12 @@ export class QuestionsComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder,
     private service: QuestionService,
+    private route: ActivatedRoute
   ) {
     this.variantsForms = this.fb.array([]);
     this.questionForm = this.fb.group({
       'id': this.fb.control(null),
+      'quizId': this.fb.control(null),
       'content': this.fb.control(''),
       'type': this.fb.control('SINGLE'),
       'variants': this.variantsForms,
@@ -95,7 +99,9 @@ export class QuestionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadQuestions();
+    const params = this.route.snapshot.params;
+    this.quizId = params['quizId'];
+    this.loadQuestions()
   }
 
   filterQuestions(query: string) {
@@ -104,7 +110,7 @@ export class QuestionsComponent implements OnInit {
 
   loadQuestions(): void {
     this.load = true;
-    this.service.findAll()
+    this.service.findAll(this.quizId)
       .pipe(finalize(() => this.load = false))
       .subscribe(questions => this.questions$.next(questions));
   }
@@ -113,6 +119,7 @@ export class QuestionsComponent implements OnInit {
     this.openQuestionForm(
       {
         id: null,
+        quizId: this.quizId,
         content: '',
         type: 'SINGLE',
         variants: []

@@ -24,9 +24,7 @@ public class QuizService implements BaseService<Quiz, QuizRequest> {
 
     @Override
     public Quiz findById(Long id) {
-        var quiz = repository.getById(id);
-        quiz.getQuestions();
-        return quiz;
+        return repository.getById(id);
     }
 
     @Override
@@ -34,7 +32,6 @@ public class QuizService implements BaseService<Quiz, QuizRequest> {
         var quiz = Quiz.builder()
                 .title(request.getTitle())
                 .timeLimit(request.getTimeLimit())
-                .questions(map(request.getQuestions(), mapper(Question::new)))
                 .build();
         return repository.save(quiz);
     }
@@ -44,7 +41,6 @@ public class QuizService implements BaseService<Quiz, QuizRequest> {
         var quiz = repository.getById(id);
         quiz.setTitle(request.getTitle());
         quiz.setTimeLimit(request.getTimeLimit());
-        quiz.setQuestions(map(request.getQuestions(), mapper(Question::new)));
         return repository.save(quiz);
     }
 }

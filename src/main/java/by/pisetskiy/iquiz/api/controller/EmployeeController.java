@@ -10,6 +10,7 @@ import by.pisetskiy.iquiz.api.request.EmployeeRequest;
 import by.pisetskiy.iquiz.service.EmployeeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,7 @@ public class EmployeeController implements BaseController<EmployeeDto, EmployeeR
     private final EmployeeMapper mapper;
 
     @Override
+    @GetMapping
     public List<EmployeeDto> findAll() {
         return map(service.findAll(), mapper::toListDto);
     }

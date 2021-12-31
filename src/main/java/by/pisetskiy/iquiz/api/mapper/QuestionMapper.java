@@ -12,8 +12,10 @@ import org.mapstruct.Mapping;
 public interface QuestionMapper {
 
     @Mapping(target = "variants", ignore = true)
+    @Mapping(target = "quizId", source = "question.quiz.id")
     QuestionDto toListDto(Question question);
 
+    @Mapping(target = "quizId", source = "question.quiz.id")
     QuestionDto toDetailDto(Question question);
 
     VariantDto variant(Variant variant);

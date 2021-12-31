@@ -15,5 +15,4 @@ public class QuizRequest extends BaseRequest {
 
     private String title;
     private Integer timeLimit;
-    private List<Long> questions = new ArrayList<>();
 }

@@ -16,10 +16,12 @@
             <div class="card-header">Тест № {{ quiz.id }} </div>
             <div class="card-body ">
               <h5 class="card-title limited-lines">{{ quiz.title }}</h5>
-              <div class="card-text">Вопросов: {{ quiz.questions?.length || 0 }}</div>
+              <div class="card-text">Вопросов: {{ quiz.questionsCount || 0 }}</div>
               <div class="card-text">Ограничение по времени: {{ quiz.timeLimit }} мин.</div>
             </div>
             <div class="card-footer">
+              <button type="button" (click)="toQuestions(quiz.id)" [disabled]="load"
+                      class="btn btn-sm btn-outline-primary">К вопросам</button>
               <button type="button" (click)="updateQuiz(quiz.id, quiz_form)" [disabled]="load"
                       class="btn btn-sm btn-outline-primary">Изменить</button>
             </div>
@@ -40,6 +42,7 @@
   <div class="modal-body">
     <form [formGroup]="quizForm">
       <input type="hidden" formControlName="id">
+      <input type="hidden" formControlName="questionsCount">
       <div class="form-group">
         <label for="title">Название теста</label>
         <input type="text" id="title" formControlName="title" class="form-control"/>
@@ -55,6 +58,7 @@
     </ul>
   </div>
   <div class="modal-footer">
+    <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndSave(true)">К вопросам</button>
     <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndSave()">Сохранить</button>
   </div>
 </ng-template>

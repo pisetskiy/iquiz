@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Formula;
 
 @Getter
 @Setter
@@ -22,20 +23,6 @@ public class Quiz extends BaseEntity {
     private String title;
     @Column(columnDefinition = "SMALLINT")
     private Integer timeLimit;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "quiz_question",
-            joinColumns = @JoinColumn(name = "quiz_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id"))
-    @ToString.Exclude
-    @Builder.Default
-    private List<Question> questions = new ArrayList<>();
-
-    public void addQuestion(Question question) {
-        this.questions.add(question);
-    }
-
-    public void removeQuestion(Question question) {
-        this.questions.remove(question);
-    }
+    @Formula("(select count(qs.id) from question qs where qs.quiz_id = id)")
+    private int questionsCount;
 }

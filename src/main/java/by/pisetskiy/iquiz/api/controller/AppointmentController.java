@@ -5,6 +5,7 @@ import by.pisetskiy.iquiz.api.mapper.AppointmentMapper;
 import by.pisetskiy.iquiz.api.request.AppointmentRequest;
 import by.pisetskiy.iquiz.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,7 @@ public class AppointmentController implements BaseController<AppointmentDto, App
     private final AppointmentMapper mapper;
 
     @Override
+    @GetMapping
     public List<AppointmentDto> findAll() {
         return map(service.findAll(), mapper::toListDto);
     }

@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 public class QuestionDto extends BaseDto {
 
+    private Long quizId;
     private String content;
     private String type;
     private List<VariantDto> variants;

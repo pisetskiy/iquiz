@@ -40,6 +40,12 @@ textarea.form-control {
   height: 2rem;
 }
 
+.card-footer {
+  :not(:last-child) {
+    margin-right: 0.5rem;
+  }
+}
+
 .limited-lines {
   overflow: hidden;
   text-overflow: ellipsis;

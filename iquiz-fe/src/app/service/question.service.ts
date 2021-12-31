@@ -13,8 +13,8 @@ export class QuestionService {
 
   constructor(private http: HttpClient) { }
 
-  findAll(): Observable<Question[]> {
-    return this.http.get<Question[]>(this.api);
+  findAll(quizId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(this.api + `?quizId=${quizId}`);
   }
 
   find(id: number): Observable<Question> {

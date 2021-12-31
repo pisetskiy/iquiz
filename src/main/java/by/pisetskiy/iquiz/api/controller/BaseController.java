@@ -11,7 +11,6 @@ import static by.pisetskiy.iquiz.api.RestEndpoints.ID;
 
 public interface BaseController<D, R> {
 
-    @GetMapping
     List<D> findAll();
 
     @GetMapping(ID)

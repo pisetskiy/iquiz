@@ -28,7 +28,6 @@ public interface AppointmentMapper {
     @Mapping(target = "quizzes", ignore = true)
     PositionDto position(JobPosition position);
 
-    @Mapping(target = "questions", ignore = true)
     QuizDto quiz(Quiz quiz);
 
     default String dateTime(LocalDateTime dateTime) {

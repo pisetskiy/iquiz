@@ -28,7 +28,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MariaDB103Dialect
         jdbc.lob.non_contextual_creation: true
-    show-sql: false
+    show-sql: true
   flyway:
     sql-migration-prefix: ''
     baseline-on-migrate: true

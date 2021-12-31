@@ -11,11 +11,7 @@ import by.pisetskiy.iquiz.api.request.QuestionRequest;
 import by.pisetskiy.iquiz.service.QuestionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(API_PREFIX + QUESTIONS)
@@ -28,6 +24,11 @@ public class QuestionController implements BaseController<QuestionDto, QuestionR
     @Override
     public List<QuestionDto> findAll() {
         return map(service.findAll(), mapper::toListDto);
+    }
+
+    @GetMapping()
+    public List<QuestionDto> findAll(@RequestParam Long quizId) {
+        return map(service.findAll(quizId), mapper::toListDto);
     }
 
     @Override

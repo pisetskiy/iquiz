@@ -26,6 +26,7 @@ public class PositionController implements BaseController<PositionDto, PositionR
     private final PositionMapper mapper;
 
     @Override
+    @GetMapping
     public List<PositionDto> findAll() {
         var positions = service.findAll();
         return map(positions, mapper::toListDto);

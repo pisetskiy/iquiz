@@ -1,17 +1,21 @@
 package by.pisetskiy.iquiz.service;
 
 import static by.pisetskiy.iquiz.util.IQuizUtil.map;
+import static by.pisetskiy.iquiz.util.IQuizUtil.mapper;
 
 import by.pisetskiy.iquiz.api.request.QuestionRequest;
 import by.pisetskiy.iquiz.api.request.VariantRequest;
 import by.pisetskiy.iquiz.model.entity.Question;
 import by.pisetskiy.iquiz.model.entity.QuestionType;
+import by.pisetskiy.iquiz.model.entity.Quiz;
 import by.pisetskiy.iquiz.model.entity.Variant;
 import by.pisetskiy.iquiz.model.repository.QuestionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +31,10 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         return repository.findAll();
     }
 
+    public List<Question> findAll(Long quizId) {
+        return repository.findAllByQuizId(quizId);
+    }
+
     @Override
     public Question findById(Long id) {
         var question = repository.getById(id);
@@ -37,6 +45,7 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
     @Override
     public Question create(QuestionRequest request) {
         var question = Question.builder()
+                .quiz(mapper(Quiz::new).apply(request.getQuizId()))
                 .content(request.getContent())
                 .type(QuestionType.valueOf(request.getType()))
                 .build();

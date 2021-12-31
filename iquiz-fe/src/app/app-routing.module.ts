@@ -7,12 +7,22 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
 
 const routes: Routes = [
   {
-    path: 'questions',
-    component: QuestionsComponent
-  },
-  {
     path: 'quizzes',
-    component: QuizzesComponent
+    children: [
+      {
+        path: '',
+        component: QuizzesComponent
+      },
+      {
+        path: ':quizId',
+        children: [
+          {
+            path: 'questions',
+            component: QuestionsComponent
+          }
+        ]
+      }
+    ]
   },
   {
     path: 'employees',
@@ -24,7 +34,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/questions',
+    redirectTo: '/quizzes',
     pathMatch: 'full'
   }
 ];

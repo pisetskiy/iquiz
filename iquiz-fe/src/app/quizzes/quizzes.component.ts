@@ -4,6 +4,7 @@ import { Quiz } from '../domain/quiz';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, combineLatest, finalize, map, Subject } from 'rxjs';
 import { QuizService } from '../service/quiz.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quizzes',
@@ -51,6 +52,7 @@ export class QuizzesComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private service: QuizService,
+    private router: Router,
   ) {
     this.quizForm = this.fb.group({
       id: this.fb.control(null),
@@ -63,6 +65,10 @@ export class QuizzesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadQuizzes();
+  }
+
+  toQuestions(id: number | null): void {
+    this.router.navigateByUrl(`/quizzes/${id}/questions`)
   }
 
   loadQuizzes(): void {
@@ -94,14 +100,14 @@ export class QuizzesComponent implements OnInit {
       .subscribe(quiz => this.openQuizForm(quiz, QuizzesComponent.EDIT_MODAL_TITLE, form));
   }
 
-  validateAndSave(): void {
+  validateAndSave(toQuestions: boolean = false): void {
     if (this.quizForm.status === 'VALID') {
       this.validationErrors = [];
       let quiz = this.quizForm.value;
       this.load = true;
       (quiz.id ? this.service.update(quiz.id, quiz) : this.service.create(quiz))
         .pipe(finalize(() => this.load = false))
-        .subscribe(() => this.modalRef?.close('SAVED'));
+        .subscribe(quiz => this.modalRef?.close({toQuestions, id: quiz.id}));
     } else {
       this.validationErrors = Object.values(this.quizForm.errors as {});
     }
@@ -110,10 +116,17 @@ export class QuizzesComponent implements OnInit {
   private openQuizForm(quiz: Quiz, modalTitle: string, form: TemplateRef<any>) {
     this.modalTitle = modalTitle;
     this.validationErrors = [];
-    this.quizForm.setValue(quiz);
-    this.modalRef = this.modalService.open(form);
-    this.modalRef.result.then(() => this.loadQuizzes(), () => {
+    this.quizForm.setValue({
+      id: quiz.id,
+      title: quiz.title,
+      timeLimit: quiz.timeLimit
     });
+    this.modalRef = this.modalService.open(form);
+    this.modalRef.result
+      .then(res => {
+        res.toQuestions ? this.toQuestions(res.id) : this.loadQuizzes()
+      })
+      .catch(() => {});
   }
 
   private filterQuizzesByQuery(quizzes: Quiz[], query: string): Quiz[] {
