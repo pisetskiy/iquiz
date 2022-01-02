@@ -1,0 +1,17 @@
+<div class="input-group">
+  <input
+    id="typeahead-focus"
+    type="text"
+    class="form-control"
+    [ngbTypeahead]="search"
+    [inputFormatter]="formatter"
+    [resultFormatter]="formatter"
+    (selectItem)="prepareModel($event)"
+    (focus)="focus$.next($any($event).target.value)"
+    (click)="click$.next($any($event).target.value)"
+    #instance="ngbTypeahead"
+  />
+  <div class="input-group-append">
+    <button class="btn btn-outline-primary" type="button" (click)="emitAdd()">Добавить</button>
+  </div>
+</div>

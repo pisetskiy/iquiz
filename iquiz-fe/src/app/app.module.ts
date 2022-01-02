@@ -12,6 +12,7 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from './search/search.component';
+import { TypeaheadComponent } from './typeahead/typeahead.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SearchComponent } from './search/search.component';
     QuestionsComponent,
     QuizzesComponent,
     SearchComponent,
+    TypeaheadComponent,
   ],
   imports: [
     BrowserModule,

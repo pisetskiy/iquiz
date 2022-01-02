@@ -12,5 +12,5 @@ import lombok.*;
 public class PositionRequest extends BaseRequest {
 
     private String title;
-    private Set<Long> quizzes = new HashSet<>();
+    private Set<QuizRequest> quizzes = new HashSet<>();
 }

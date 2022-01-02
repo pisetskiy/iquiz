@@ -15,6 +15,8 @@ public interface PositionMapper {
     PositionDto toListDto(JobPosition position);
 
     PositionDto toDetailDto(JobPosition position);
-    
+
+    @Mapping(target = "timeLimit", ignore = true)
+    @Mapping(target = "questionsCount", ignore = true)
     QuizDto quiz(Quiz quiz);
 }

@@ -11,7 +11,7 @@
     <div class="container-fluid">
       <div class="row">
         <div *ngFor="let quiz of filteredQuizzes$ | async; index as i; trackBy: trackByFn"
-             class="questions__card col-lg-6">
+             class="quizzes__card col-lg-6">
           <div class="card text-dark bg-light">
             <div class="card-header">Тест № {{ quiz.id }} </div>
             <div class="card-body ">
@@ -42,7 +42,6 @@
   <div class="modal-body">
     <form [formGroup]="quizForm">
       <input type="hidden" formControlName="id">
-      <input type="hidden" formControlName="questionsCount">
       <div class="form-group">
         <label for="title">Название теста</label>
         <input type="text" id="title" formControlName="title" class="form-control"/>

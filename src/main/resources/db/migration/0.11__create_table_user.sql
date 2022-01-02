@@ -15,7 +15,7 @@ CREATE TABLE user
 ) ENGINE = InnoDB;
 
 INSERT INTO job_position(id, title)
-VALUES (1000, 'Администратор');
+VALUES (1000, 'Администратор IT-решений');
 
 INSERT INTO employee(id, job_position_id, first_name, middle_name, last_name, email)
 VALUES (1000, 1000, 'Иван', 'Иванович', 'Иванов', 'iiivanov@it.company.com');

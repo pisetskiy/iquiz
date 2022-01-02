@@ -13,5 +13,6 @@ import lombok.ToString;
 public class PositionDto extends BaseDto {
 
     private String title;
+    private Integer quizzesCount;
     private List<QuizDto> quizzes;
 }
