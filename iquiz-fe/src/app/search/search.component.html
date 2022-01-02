@@ -1,6 +1,6 @@
 <form class="form-inline" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
   <div class="input-group mb-3">
-    <input type="text" formControlName="query" class="form-control" placeholder="Поиск вопроса">
+    <input type="text" formControlName="query" class="form-control" [placeholder]="placeholder">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="submit">Найти</button>
     </div>
