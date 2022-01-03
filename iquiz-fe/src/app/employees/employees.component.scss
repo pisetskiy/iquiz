@@ -1,0 +1,52 @@
+.employees {
+  height: 100%;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    display: flex;
+
+    :not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__card {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.modal {
+  &-header, &-footer {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.card-footer {
+  :not(:last-child) {
+    margin-right: 0.5rem;
+  }
+}
+
+.limited-lines {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}

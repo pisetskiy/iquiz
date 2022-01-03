@@ -13,7 +13,6 @@
         <div *ngFor="let quiz of filteredQuizzes$ | async; index as i; trackBy: trackByFn"
              class="quizzes__card col-lg-6">
           <div class="card text-dark bg-light">
-            <div class="card-header">Тест № {{ quiz.id }} </div>
             <div class="card-body ">
               <h5 class="card-title limited-lines">{{ quiz.title }}</h5>
               <div class="card-text">Вопросов: {{ quiz.questionsCount || 0 }}</div>

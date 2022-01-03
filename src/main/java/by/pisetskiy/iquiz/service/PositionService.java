@@ -1,16 +1,14 @@
 package by.pisetskiy.iquiz.service;
 
 import static by.pisetskiy.iquiz.util.IQuizUtil.map;
-import static by.pisetskiy.iquiz.util.IQuizUtil.mapper;
 
 import by.pisetskiy.iquiz.api.request.PositionRequest;
 import by.pisetskiy.iquiz.api.request.QuizRequest;
 import by.pisetskiy.iquiz.model.entity.JobPosition;
 import by.pisetskiy.iquiz.model.entity.Quiz;
 import by.pisetskiy.iquiz.model.repository.JobPositionRepository;
-import java.util.List;
-
 import by.pisetskiy.iquiz.model.repository.QuizRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

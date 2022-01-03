@@ -21,4 +21,4 @@ INSERT INTO employee(id, job_position_id, first_name, middle_name, last_name, em
 VALUES (1000, 1000, 'Иван', 'Иванович', 'Иванов', 'iiivanov@it.company.com');
 
 INSERT INTO user(id, username, password, role, employee_id)
-VALUES (1000, 'iiivanov', '{noop}Adminus-Maximus', 'ADMIN', 1000);
+VALUES (1000, 'iiivanov@it.company.com', '{noop}Adminus-Maximus', 'ADMIN', 1000);

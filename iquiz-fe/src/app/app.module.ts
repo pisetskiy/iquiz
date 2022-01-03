@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from './search/search.component';
 import { TypeaheadComponent } from './typeahead/typeahead.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { TypeaheadComponent } from './typeahead/typeahead.component';
     HttpClientModule,
     ReactiveFormsModule,
     CommonModule,
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

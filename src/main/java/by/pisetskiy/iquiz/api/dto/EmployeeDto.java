@@ -9,12 +9,12 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class EmployeeDto {
+public class EmployeeDto extends BaseDto {
 
     private String firstName;
     private String middleName;
     private String lastName;
     private String email;
-
     private PositionDto position;
+    private Boolean isAdmin;
 }

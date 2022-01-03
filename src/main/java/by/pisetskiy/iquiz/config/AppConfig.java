@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootConfiguration
@@ -29,5 +31,10 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         http.logout();
         http.cors();
         http.csrf().disable();
+    }
+
+    @Bean
+    PasswordEncoder delegatingPasswordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

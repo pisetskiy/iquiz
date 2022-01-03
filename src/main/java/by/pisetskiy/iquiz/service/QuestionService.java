@@ -10,12 +10,9 @@ import by.pisetskiy.iquiz.model.entity.QuestionType;
 import by.pisetskiy.iquiz.model.entity.Quiz;
 import by.pisetskiy.iquiz.model.entity.Variant;
 import by.pisetskiy.iquiz.model.repository.QuestionRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

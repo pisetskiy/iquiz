@@ -3,7 +3,6 @@ package by.pisetskiy.iquiz.model.entity;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

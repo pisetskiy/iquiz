@@ -1,7 +1,6 @@
 package by.pisetskiy.iquiz.util;
 
 import by.pisetskiy.iquiz.model.entity.BaseEntity;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class EmployeeService implements BaseService<Employee, EmployeeRequest> {
 
     private final EmployeeRepository repository;
+    private final UserService userService;
 
     @Override
     public List<Employee> findAll() {
@@ -37,8 +38,11 @@ public class EmployeeService implements BaseService<Employee, EmployeeRequest> {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .jobPosition(map(request.getPosition(), mapper(JobPosition::new)))
+                .isAdmin(request.getIsAdmin())
                 .build();
-        return repository.save(employee);
+        employee = repository.save(employee);
+        userService.createUser(employee);
+        return employee;
     }
 
     @Override
@@ -49,6 +53,11 @@ public class EmployeeService implements BaseService<Employee, EmployeeRequest> {
         employee.setLastName(request.getLastName());
         employee.setEmail(request.getEmail());
         employee.setJobPosition(map(request.getPosition(), mapper(JobPosition::new)));
-        return repository.save(employee);
+        employee.setIsAdmin(request.getIsAdmin());
+
+        employee =  repository.save(employee);
+        userService.updateUser(employee);
+
+        return repository.getById(id);
     }
 }

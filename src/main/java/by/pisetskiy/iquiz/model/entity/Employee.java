@@ -4,11 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Formula;
 
 @Getter
 @Setter
@@ -22,6 +21,9 @@ public class Employee extends BaseEntity {
     private String middleName;
     private String lastName;
     private String email;
+    @Formula("(select if(u.role = 'ADMIN', 1, 0) from user u where u.employee_id = id)")
+    @Builder.Default
+    private Boolean isAdmin = Boolean.FALSE;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "job_position_id")

@@ -19,4 +19,5 @@ public interface EmployeeMapper {
 
     @Mapping(target = "quizzes", ignore = true)
     PositionDto position(JobPosition position);
+
 }

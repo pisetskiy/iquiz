@@ -16,4 +16,5 @@ public class EmployeeRequest extends BaseRequest {
     private String lastName;
     private String email;
     private Long position;
+    private Boolean isAdmin = Boolean.FALSE;
 }

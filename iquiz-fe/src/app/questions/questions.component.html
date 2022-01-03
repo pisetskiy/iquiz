@@ -11,9 +11,8 @@
     <div class="container-fluid">
       <div class="row">
         <div *ngFor="let question of filteredQuestions$ | async; index as i; trackBy: trackByFn"
-             class="questions__card col-lg-6 col-xl-4 col-xxl-3">
+             class="questions__card col-md-6 col-xl-4">
           <div class="card text-dark bg-light">
-            <div class="card-header">Задание № {{ question.id }} </div>
             <div class="card-body ">
               <h5 class="card-title">{{ question.type === 'SINGLE' ? 'Один верный ответ' : 'Несколько верных ответов' }}</h5>
               <div class="card-text">
