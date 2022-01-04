@@ -1,4 +1,7 @@
 <div class="questions">
+  <div class="container-fluid questions__title">
+    <h4>{{ quiz?.title }} ({{ quiz?.timeLimit + 'мин.'}})</h4>
+  </div>
   <div class="container-fluid questions__header">
     <div>
       <button type="button" class="btn btn-primary" (click)="addQuestion(question_form)">Создать</button>

@@ -1,5 +1,6 @@
 package by.pisetskiy.iquiz.model.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,11 +33,11 @@ public class Appointment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AppointmentState state;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime deadline;
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "DATE")
+    private LocalDate deadline;
+    @Column(columnDefinition = "DATETIME")
     private LocalDateTime startDate;
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "DATETIME")
     private LocalDateTime endDate;
 
 }

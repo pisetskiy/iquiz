@@ -1,7 +1,6 @@
 package by.pisetskiy.iquiz.api.controller;
 
 import static by.pisetskiy.iquiz.api.RestEndpoints.API_PREFIX;
-import static by.pisetskiy.iquiz.api.RestEndpoints.ID;
 import static by.pisetskiy.iquiz.api.RestEndpoints.POSITIONS;
 import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 
@@ -10,10 +9,9 @@ import by.pisetskiy.iquiz.api.mapper.PositionMapper;
 import by.pisetskiy.iquiz.api.request.PositionRequest;
 import by.pisetskiy.iquiz.service.PositionService;
 import java.util.List;
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,14 +24,13 @@ public class PositionController implements BaseController<PositionDto, PositionR
     private final PositionMapper mapper;
 
     @Override
-    @GetMapping
-    public List<PositionDto> findAll() {
+    public List<PositionDto> findAll(Map<String, String> params) {
         var positions = service.findAll();
         return map(positions, mapper::toListDto);
     }
 
     @Override
-    public PositionDto findById(@PathVariable Long id) {
+    public PositionDto findById(Long id) {
         var position = service.findById(id);
         return mapper.toDetailDto(position);
     }
@@ -45,7 +42,7 @@ public class PositionController implements BaseController<PositionDto, PositionR
     }
 
     @Override
-    public PositionDto update(@PathVariable Long id, PositionRequest request) {
+    public PositionDto update(Long id, PositionRequest request) {
         var position = service.update(id, request);
         return mapper.toDetailDto(position);
     }

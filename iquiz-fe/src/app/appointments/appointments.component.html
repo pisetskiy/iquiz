@@ -1,0 +1,106 @@
+<div class="appointments">
+  <div class="container-fluid appointments__title">
+    <h4>{{ employee?.lastName }} {{ employee?.firstName }} {{ employee?.middleName }} ({{ employee?.position?.title }})</h4>
+  </div>
+  <div class="container-fluid appointments__header">
+    <div>
+      <button type="button" class="btn btn-primary" (click)="addAppointment()">Создать</button>
+    </div>
+
+    <app-search placeholder="Поиск тестирования"></app-search>
+  </div>
+
+  <div class="appointments__body">
+    <div class="container-fluid">
+      <div class="row">
+        <div *ngFor="let appointment of filteredAppointments$ | async; index as i; trackBy: trackByFn"
+             class="appointments__card col-lg-6">
+          <div class="card text-dark bg-light">
+            <div class="card-body ">
+              <h5 class="card-title limited-lines">{{ appointment.quiz?.title }}</h5>
+              <div class="card-text">
+                Срок сдачи: {{ appointment.deadline | date : 'dd.MM.yyyy' }}
+              </div>
+              <div class="card-text">
+                Статус: {{ states[appointment.state || ''] }}
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="button"
+                      class="btn btn-sm btn-outline-primary"
+                      [disabled]="load || !isEditable(appointment)"
+                      (click)="editAppointment(appointment.id)">
+                Изменить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #appointment_form let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalTitle}}</h4>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')">
+      <span>&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="appointmentForm">
+      <input type="hidden" formControlName="id">
+      <div class="form-group">
+        <label for="employee">Сотрудник</label>
+        <ng-select [items]="[employee]"
+                   bindValue="id"
+                   bindLabel="lastName"
+                   labelForId="employee"
+                   placeholder="Выберите сотрудника"
+                   [clearable]="false"
+                   [readonly]="true"
+                   formControlName="employee">
+          <ng-template ng-label-tmp let-item="item">
+            <span>{{item.lastName}} {{item.firstName}} {{item.middleName}}</span>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="form-group">
+        <label for="quiz">Тест</label>
+        <ng-select [items]="quizzes"
+                   bindValue="id"
+                   bindLabel="title"
+                   labelForId="quiz"
+                   placeholder="Выберите тест"
+                   formControlName="quiz"
+                   [clearable]="false">
+        </ng-select>
+      </div>
+      <div class="form-group">
+        <label for="deadline">Срок сдачи</label>
+        <div class="input-group">
+          <input id="deadline"
+                 class="form-control"
+                 ngbDatepicker
+                 #d="ngbDatepicker"
+                 placeholder="ДД.ММ.ГГГГ"
+                 [minDate]="minDate"
+                 [maxDate]="maxDate"
+                 formControlName="deadline"
+                 readonly>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <ul class="list-unstyled invalid-feedback" *ngIf="validationErrors.length">
+      <li *ngFor="let error of validationErrors"> {{ error }}</li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndSave()">Сохранить
+    </button>
+  </div>
+</ng-template>

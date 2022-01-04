@@ -11,18 +11,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static by.pisetskiy.iquiz.util.IQuizUtil.mapper;
-import static by.pisetskiy.iquiz.util.IQuizUtil.toDateTime;
+import static by.pisetskiy.iquiz.util.IQuizUtil.*;
 
 @Service
 @RequiredArgsConstructor
 public class AppointmentService implements BaseService<Appointment, AppointmentRequest> {
 
     private final AppointmentRepository repository;
+    private final EmailService emailService;
 
     @Override
     public List<Appointment> findAll() {
         return repository.findAll();
+    }
+
+    public List<Appointment> findByEmployeeId(Long employeeId) {
+        return repository.findAllByEmployeeId(employeeId);
     }
 
     @Override
@@ -36,9 +40,11 @@ public class AppointmentService implements BaseService<Appointment, AppointmentR
                 .employee(mapper(Employee::new).apply(request.getEmployee()))
                 .quiz(mapper(Quiz::new).apply(request.getQuiz()))
                 .state(AppointmentState.CREATED)
-                .deadline(toDateTime(request.getDeadline()))
+                .deadline(toDate(request.getDeadline()))
                 .build();
-        return repository.save(appointment);
+        appointment = repository.save(appointment);
+        emailService.sendAppointmentCreatedEmail(appointment);
+        return appointment;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class AppointmentService implements BaseService<Appointment, AppointmentR
         appointment.setEmployee(mapper(Employee::new).apply(request.getEmployee()));
         appointment.setQuiz(mapper(Quiz::new).apply(request.getQuiz()));
         appointment.setState(AppointmentState.CREATED);
-        appointment.setDeadline(toDateTime(request.getDeadline()));
+        appointment.setDeadline(toDate(request.getDeadline()));
 
         return repository.save(appointment);
     }

@@ -17,6 +17,10 @@ export class QuizService {
     return this.http.get<Quiz[]>(this.api);
   }
 
+  findForEmployee(employeeId: number): Observable<Quiz[]> {
+    return this.http.get<Quiz[]>(this.api + `?employeeId=${employeeId}`);
+  }
+
   find(id: number): Observable<Quiz> {
     return this.http.get<Quiz>(this.api + `/${id}`);
   }

@@ -17,9 +17,16 @@ public class QuizService implements BaseService<Quiz, QuizRequest> {
 
     private final QuizRepository repository;
 
+    private final EmployeeService employeeService;
+
     @Override
     public List<Quiz> findAll() {
         return repository.findAll();
+    }
+
+    public List<Quiz> findByEmployeeId(Long employeeId) {
+        var employee = employeeService.findById(employeeId);
+        return repository.findAllByPositionsContains(employee.getJobPosition());
     }
 
     @Override

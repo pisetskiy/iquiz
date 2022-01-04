@@ -8,11 +8,12 @@ import by.pisetskiy.iquiz.api.dto.QuestionDto;
 import by.pisetskiy.iquiz.api.mapper.QuestionMapper;
 import by.pisetskiy.iquiz.api.request.QuestionRequest;
 import by.pisetskiy.iquiz.service.QuestionService;
+
 import java.util.List;
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,13 +25,10 @@ public class QuestionController implements BaseController<QuestionDto, QuestionR
     private final QuestionMapper mapper;
 
     @Override
-    public List<QuestionDto> findAll() {
-        return map(service.findAll(), mapper::toListDto);
-    }
-
-    @GetMapping()
-    public List<QuestionDto> findAll(@RequestParam Long quizId) {
-        return map(service.findAll(quizId), mapper::toListDto);
+    public List<QuestionDto> findAll(Map<String, String> params) {
+        var quizId = Long.parseLong(params.getOrDefault("quizId", "-1"));
+        var questions = quizId != -1 ? service.findByQuizId(quizId) : service.findAll();
+        return map(questions, mapper::toListDto);
     }
 
     @Override

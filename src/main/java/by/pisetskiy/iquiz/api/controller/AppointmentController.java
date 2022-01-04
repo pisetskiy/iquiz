@@ -5,14 +5,15 @@ import by.pisetskiy.iquiz.api.mapper.AppointmentMapper;
 import by.pisetskiy.iquiz.api.request.AppointmentRequest;
 import by.pisetskiy.iquiz.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 import static by.pisetskiy.iquiz.api.RestEndpoints.API_PREFIX;
 import static by.pisetskiy.iquiz.api.RestEndpoints.APPOINTMENTS;
+import static by.pisetskiy.iquiz.util.IQuizUtil.getIdFromParams;
 import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 
 @RestController
@@ -24,9 +25,10 @@ public class AppointmentController implements BaseController<AppointmentDto, App
     private final AppointmentMapper mapper;
 
     @Override
-    @GetMapping
-    public List<AppointmentDto> findAll() {
-        return map(service.findAll(), mapper::toListDto);
+    public List<AppointmentDto> findAll(Map<String, String> params) {
+        var employeeId = getIdFromParams(params, "employeeId");
+        var appointments = employeeId != null ? service.findByEmployeeId(employeeId) : service.findAll();
+        return map(appointments, mapper::toListDto);
     }
 
     @Override

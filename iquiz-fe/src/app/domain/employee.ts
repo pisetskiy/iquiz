@@ -8,4 +8,5 @@ export interface Employee extends Model {
   email: string;
   position: Position;
   isAdmin: boolean;
+  appointments: number;
 }

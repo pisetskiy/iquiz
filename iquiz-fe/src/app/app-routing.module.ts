@@ -4,6 +4,7 @@ import { EmployeesComponent } from './employees/employees.component';
 import { PositionsComponent } from './positions/positions.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
+import { AppointmentsComponent } from './appointments/appointments.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,21 @@ const routes: Routes = [
   },
   {
     path: 'employees',
-    component: EmployeesComponent
+    children: [
+      {
+        path: '',
+        component: EmployeesComponent,
+      },
+      {
+        path: ':employeeId',
+        children: [
+          {
+            path: 'appointments',
+            component: AppointmentsComponent
+          }
+        ]
+      }
+    ]
   },
   {
     path: 'positions',
@@ -34,7 +49,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/quizzes',
+    redirectTo: '/employees',
     pathMatch: 'full'
   }
 ];

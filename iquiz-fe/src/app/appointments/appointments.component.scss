@@ -1,0 +1,66 @@
+.appointments {
+  height: 100%;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  &__header {
+    display: flex;
+
+    :not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__card {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.modal {
+  &-header, &-footer {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.card-footer {
+  :not(:last-child) {
+    margin-right: 0.5rem;
+  }
+}
+
+.limited-lines {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+button.calendar, button.calendar:active {
+  width: 2.75rem;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=)!important;
+  background-repeat: no-repeat;
+  background-size: 23px;
+  background-position: center;
+}

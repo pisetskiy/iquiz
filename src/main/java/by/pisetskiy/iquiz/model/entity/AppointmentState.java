@@ -4,7 +4,6 @@ public enum AppointmentState {
 
     CREATED,
     STARTED,
-    FAILED,
     PASSED,
     EXPIRED,
 }

@@ -24,6 +24,8 @@ public class Employee extends BaseEntity {
     @Formula("(select if(u.role = 'ADMIN', 1, 0) from user u where u.employee_id = id)")
     @Builder.Default
     private Boolean isAdmin = Boolean.FALSE;
+    @Formula("(select count(a.id) from appointment a where a.employee_id = id and a.state = 'CREATED')")
+    private Integer appointments;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "job_position_id")

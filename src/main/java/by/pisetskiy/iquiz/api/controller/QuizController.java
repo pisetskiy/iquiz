@@ -9,8 +9,9 @@ import by.pisetskiy.iquiz.api.mapper.QuizMapper;
 import by.pisetskiy.iquiz.api.request.QuizRequest;
 import by.pisetskiy.iquiz.service.QuizService;
 import java.util.List;
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,9 +24,10 @@ public class QuizController implements BaseController<QuizDto, QuizRequest> {
     private final QuizMapper mapper;
 
     @Override
-    @GetMapping
-    public List<QuizDto> findAll() {
-        return map(service.findAll(), mapper::toListDto);
+    public List<QuizDto> findAll(Map<String,String> params) {
+        var employeeId = Long.parseLong(params.getOrDefault("employeeId", "-1"));
+        var quizzes = employeeId != -1 ? service.findByEmployeeId(employeeId) : service.findAll();
+        return map(quizzes, mapper::toListDto);
     }
 
     @Override

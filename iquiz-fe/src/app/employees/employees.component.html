@@ -17,13 +17,18 @@
               <h5 class="card-title limited-lines">
                 {{ employee.lastName }} {{ employee.firstName }} {{ employee.middleName }}
               </h5>
+              <div class="card-text limited-lines">Тестов к сдаче: {{ employee.appointments || 0 }}</div>
+              <br>
               <div class="card-text">
                 Почта: <a href="mailto:{{ employee.email }}">{{ employee.email }}</a>
               </div>
               <div class="card-text limited-lines">Должность: {{ employee.position.title }}</div>
+              <div class="card-text limited-lines">Права администратора: {{ employee.isAdmin ? 'Да' : 'Нет' }}</div>
+
             </div>
             <div class="card-footer">
-              <button type="button" [disabled]="load" class="btn btn-sm btn-outline-primary">К тестированию</button>
+              <button type="button" [disabled]="load" class="btn btn-sm btn-outline-primary"
+                      (click)="toAppointments(employee.id)">К тестированию</button>
               <button type="button" [disabled]="load" class="btn btn-sm btn-outline-primary"
                       (click)="editEmployee(employee.id, employee_form)">Изменить</button>
             </div>

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerI18n, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PositionsComponent } from './positions/positions.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EmployeesComponent } from './employees/employees.component';
@@ -14,6 +14,10 @@ import { CommonModule } from '@angular/common';
 import { SearchComponent } from './search/search.component';
 import { TypeaheadComponent } from './typeahead/typeahead.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AppointmentsComponent } from './appointments/appointments.component';
+import { DatepickerFormatService } from './service/datepicker-format.service';
+import { DatepickerAdapterService } from './service/datepicker-adapter.service';
+import { DatepickerTranslationService } from './service/datepicker-translation.service';
 
 @NgModule({
   declarations: [
@@ -24,6 +28,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     QuizzesComponent,
     SearchComponent,
     TypeaheadComponent,
+    AppointmentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +39,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CommonModule,
     NgSelectModule,
   ],
-  providers: [],
+  providers: [
+    { provide: NgbDateParserFormatter, useClass: DatepickerFormatService },
+    { provide: NgbDateAdapter, useClass: DatepickerAdapterService },
+    { provide: NgbDatepickerI18n, useClass: DatepickerTranslationService },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

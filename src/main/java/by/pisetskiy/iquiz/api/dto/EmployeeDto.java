@@ -17,4 +17,5 @@ public class EmployeeDto extends BaseDto {
     private String email;
     private PositionDto position;
     private Boolean isAdmin;
+    private Integer appointments;
 }

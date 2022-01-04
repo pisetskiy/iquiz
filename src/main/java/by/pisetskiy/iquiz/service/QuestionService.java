@@ -28,7 +28,7 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         return repository.findAll();
     }
 
-    public List<Question> findAll(Long quizId) {
+    public List<Question> findByQuizId(Long quizId) {
         return repository.findAllByQuizId(quizId);
     }
 

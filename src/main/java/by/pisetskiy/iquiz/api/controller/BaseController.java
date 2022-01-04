@@ -1,17 +1,16 @@
 package by.pisetskiy.iquiz.api.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static by.pisetskiy.iquiz.api.RestEndpoints.ID;
 
 public interface BaseController<D, R> {
 
-    List<D> findAll();
+    @GetMapping
+    List<D> findAll(@RequestParam Map<String, String> params);
 
     @GetMapping(ID)
     D findById(@PathVariable Long id);

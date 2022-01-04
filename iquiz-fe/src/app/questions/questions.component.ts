@@ -13,6 +13,8 @@ import {
 import { QuestionService } from '../service/question.service';
 import { BehaviorSubject, combineLatest, finalize, map, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { QuizService } from '../service/quiz.service';
+import { Quiz } from '../domain/quiz';
 
 @Component({
   selector: 'app-questions',
@@ -74,6 +76,7 @@ export class QuestionsComponent implements OnInit {
   questionForm: FormGroup;
   variantsForms: FormArray;
   quizId: number = -1;
+  quiz?: Quiz;
 
   questions$: Subject<Question[]> = new BehaviorSubject<Question[]>([]);
   query$: Subject<string> = new BehaviorSubject<string>('');
@@ -84,6 +87,7 @@ export class QuestionsComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder,
     private service: QuestionService,
+    private quizService: QuizService,
     private route: ActivatedRoute
   ) {
     this.variantsForms = this.fb.array([]);
@@ -101,6 +105,8 @@ export class QuestionsComponent implements OnInit {
   ngOnInit(): void {
     const params = this.route.snapshot.params;
     this.quizId = params['quizId'];
+    this.quizService.find(this.quizId)
+      .subscribe(quiz => this.quiz = quiz);
     this.loadQuestions()
   }
 
