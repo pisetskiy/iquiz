@@ -10,6 +10,7 @@ import { Employee } from '../domain/employee';
 export class EmployeeService {
 
   private readonly api = environment.api_prefix + '/employees';
+  private readonly user_api = environment.api_prefix + '/user';
 
   constructor(private http: HttpClient) {
   }
@@ -28,5 +29,9 @@ export class EmployeeService {
 
   update(id: number, employee: Employee): Observable<Employee> {
     return this.http.post<Employee>(this.api + `/${id}`, employee);
+  }
+
+  user(): Observable<Employee> {
+    return this.http.get<Employee>(this.user_api);
   }
 }

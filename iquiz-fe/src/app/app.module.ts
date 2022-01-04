@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { EmployeesComponent } from './employees/employees.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from './search/search.component';
 import { TypeaheadComponent } from './typeahead/typeahead.component';
@@ -18,6 +18,8 @@ import { AppointmentsComponent } from './appointments/appointments.component';
 import { DatepickerFormatService } from './service/datepicker-format.service';
 import { DatepickerAdapterService } from './service/datepicker-adapter.service';
 import { DatepickerTranslationService } from './service/datepicker-translation.service';
+import { MyComponent } from './my/my.component';
+import { AppointmentStatesRadioComponent } from './appointment-states-radio/appointment-states-radio.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { DatepickerTranslationService } from './service/datepicker-translation.s
     SearchComponent,
     TypeaheadComponent,
     AppointmentsComponent,
+    MyComponent,
+    AppointmentStatesRadioComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +40,7 @@ import { DatepickerTranslationService } from './service/datepicker-translation.s
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     CommonModule,
     NgSelectModule,
   ],

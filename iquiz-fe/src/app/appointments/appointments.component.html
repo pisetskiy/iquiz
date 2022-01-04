@@ -7,7 +7,9 @@
       <button type="button" class="btn btn-primary" (click)="addAppointment()">Создать</button>
     </div>
 
-    <app-search placeholder="Поиск тестирования"></app-search>
+    <app-search placeholder="Поиск тестирования" (search)="query$.next($event)"></app-search>
+
+    <app-appointment-states-radio (stateSelect)="state$.next($event)"></app-appointment-states-radio>
   </div>
 
   <div class="appointments__body">

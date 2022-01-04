@@ -5,10 +5,17 @@ import { PositionsComponent } from './positions/positions.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
+import { MyComponent } from './my/my.component';
+import { UserService } from './service/user.service';
 
 const routes: Routes = [
   {
+    path: 'my',
+    component: MyComponent
+  },
+  {
     path: 'quizzes',
+    canActivate: [UserService],
     children: [
       {
         path: '',
@@ -27,6 +34,7 @@ const routes: Routes = [
   },
   {
     path: 'employees',
+    canActivate: [UserService],
     children: [
       {
         path: '',
@@ -45,11 +53,12 @@ const routes: Routes = [
   },
   {
     path: 'positions',
-    component: PositionsComponent
+    component: PositionsComponent,
+    canActivate: [UserService],
   },
   {
     path: '',
-    redirectTo: '/employees',
+    redirectTo: '/my',
     pathMatch: 'full'
   }
 ];

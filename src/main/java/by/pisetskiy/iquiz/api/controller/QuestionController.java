@@ -7,6 +7,7 @@ import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 import by.pisetskiy.iquiz.api.dto.QuestionDto;
 import by.pisetskiy.iquiz.api.mapper.QuestionMapper;
 import by.pisetskiy.iquiz.api.request.QuestionRequest;
+import by.pisetskiy.iquiz.api.security.HasRoleAdmin;
 import by.pisetskiy.iquiz.service.QuestionService;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(API_PREFIX + QUESTIONS)
 @RequiredArgsConstructor
+@HasRoleAdmin
 public class QuestionController implements BaseController<QuestionDto, QuestionRequest> {
 
     private final QuestionService service;

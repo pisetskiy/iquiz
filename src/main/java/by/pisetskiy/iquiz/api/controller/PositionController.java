@@ -7,6 +7,7 @@ import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 import by.pisetskiy.iquiz.api.dto.PositionDto;
 import by.pisetskiy.iquiz.api.mapper.PositionMapper;
 import by.pisetskiy.iquiz.api.request.PositionRequest;
+import by.pisetskiy.iquiz.api.security.HasRoleAdmin;
 import by.pisetskiy.iquiz.service.PositionService;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(API_PREFIX + POSITIONS)
 @RequiredArgsConstructor
+@HasRoleAdmin
 public class PositionController implements BaseController<PositionDto, PositionRequest> {
 
     private final PositionService service;

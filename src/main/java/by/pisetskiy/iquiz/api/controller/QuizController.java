@@ -7,6 +7,7 @@ import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 import by.pisetskiy.iquiz.api.dto.QuizDto;
 import by.pisetskiy.iquiz.api.mapper.QuizMapper;
 import by.pisetskiy.iquiz.api.request.QuizRequest;
+import by.pisetskiy.iquiz.api.security.HasRoleAdmin;
 import by.pisetskiy.iquiz.service.QuizService;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(API_PREFIX + QUIZZES)
 @RequiredArgsConstructor
+@HasRoleAdmin
 public class QuizController implements BaseController<QuizDto, QuizRequest> {
 
     private final QuizService service;

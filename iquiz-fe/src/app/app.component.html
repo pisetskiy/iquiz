@@ -3,7 +3,7 @@
     <span class="navbar-brand">iТест</span>
 
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" *ngFor="let link of links">
+      <li class="nav-item" *ngFor="let link of links$ | async">
         <a class="nav-link" [routerLink]="link.fragment" routerLinkActive="active">{{link.title}}</a>
       </li>
     </ul>

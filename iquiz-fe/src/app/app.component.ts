@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { UserService } from './service/user.service';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,20 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AppComponent {
 
-  links = [
-    { title: 'Сотрудники', fragment: 'employees'},
-    { title: 'Тесты', fragment: 'quizzes'},
-    { title: 'Должности', fragment: 'positions'},
+  private readonly links = [
+    { title: 'Мои тесты', fragment: 'my' },
+    { title: 'Сотрудники', fragment: 'employees', adminOnly: true },
+    { title: 'Тесты', fragment: 'quizzes', adminOnly: true },
+    { title: 'Должности', fragment: 'positions', adminOnly: true },
   ];
 
-  constructor(public route: ActivatedRoute) {
+  links$: Observable<any[]>
+
+  constructor(
+    private userService: UserService
+  ) {
+    this.links$ = this.userService.user.pipe(map(user => {
+      return this.links.filter(l => !l.adminOnly || user.isAdmin)
+    }))
   }
 }

@@ -7,6 +7,7 @@ import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 import by.pisetskiy.iquiz.api.dto.EmployeeDto;
 import by.pisetskiy.iquiz.api.mapper.EmployeeMapper;
 import by.pisetskiy.iquiz.api.request.EmployeeRequest;
+import by.pisetskiy.iquiz.api.security.HasRoleAdmin;
 import by.pisetskiy.iquiz.service.EmployeeService;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(API_PREFIX + EMPLOYEES)
 @RequiredArgsConstructor
+@HasRoleAdmin
 public class EmployeeController implements BaseController<EmployeeDto, EmployeeRequest> {
 
     private final EmployeeService service;

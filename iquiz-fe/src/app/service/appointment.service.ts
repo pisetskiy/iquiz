@@ -10,6 +10,7 @@ import { Appointment } from '../domain/appointment';
 export class AppointmentService {
 
   private readonly api = environment.api_prefix + '/appointments';
+  private readonly user_api = environment.api_prefix + '/user/appointments';
 
   constructor(private http: HttpClient) {
   }
@@ -28,5 +29,9 @@ export class AppointmentService {
 
   update(id: number, appointment: any): Observable<Appointment> {
     return this.http.post<Appointment>(this.api + `/${id}`, appointment);
+  }
+
+  user(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(this.user_api);
   }
 }

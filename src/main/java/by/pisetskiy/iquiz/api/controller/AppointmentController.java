@@ -3,6 +3,7 @@ package by.pisetskiy.iquiz.api.controller;
 import by.pisetskiy.iquiz.api.dto.AppointmentDto;
 import by.pisetskiy.iquiz.api.mapper.AppointmentMapper;
 import by.pisetskiy.iquiz.api.request.AppointmentRequest;
+import by.pisetskiy.iquiz.api.security.HasRoleAdmin;
 import by.pisetskiy.iquiz.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import static by.pisetskiy.iquiz.api.RestEndpoints.APPOINTMENTS;
 import static by.pisetskiy.iquiz.util.IQuizUtil.getIdFromParams;
 import static by.pisetskiy.iquiz.util.IQuizUtil.map;
 
+@HasRoleAdmin
 @RestController
 @RequestMapping(API_PREFIX + APPOINTMENTS)
 @RequiredArgsConstructor

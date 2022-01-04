@@ -66,8 +66,9 @@ export class AppointmentsComponent implements OnInit {
   appointments: Appointment[] = [];
   appointments$ = new BehaviorSubject<Appointment[]>([]);
   query$ = new BehaviorSubject<string>('');
-  filteredAppointments$ = combineLatest([this.appointments$, this.query$])
-    .pipe(map((data: any[]) => this.filterAppointmentsByQuery(data[0], data[1])));
+  state$ = new BehaviorSubject<string>('CREATED');
+  filteredAppointments$ = combineLatest([this.appointments$, this.query$, this.state$])
+    .pipe(map((data: any[]) => this.filterAppointmentsByQuery(data[0], data[1], data[2])));
 
   @ViewChild('appointment_form', {static: true})
   formTemplate?: TemplateRef<any>;
@@ -162,14 +163,17 @@ export class AppointmentsComponent implements OnInit {
     });
   }
 
-  private filterAppointmentsByQuery(appointments: Appointment[], query: string): Appointment[] {
+  private filterAppointmentsByQuery(appointments: Appointment[], query: string, state: string): Appointment[] {
+    let result = appointments;
     if (query) {
       const regexp = new RegExp(query, 'i');
-      return appointments.filter(a => regexp.test(a.quiz?.title || '')
-        || regexp.test(a.deadline || '')
-        || regexp.test(this.states[a.state || '']));
+      result = result.filter(a => regexp.test(a.quiz?.title || '')
+        || regexp.test(a.deadline || ''));
     }
-    return appointments;
+    if (state) {
+      result = result.filter(a => a.state === state);
+    }
+    return result;
   }
 
 }

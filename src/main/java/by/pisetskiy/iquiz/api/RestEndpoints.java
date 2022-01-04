@@ -19,4 +19,6 @@ public class RestEndpoints {
     public static final String QUESTIONS = "/questions";
 
     public static final String QUIZZES = "/quizzes";
+
+    public static final String USER = "/user";
 }
