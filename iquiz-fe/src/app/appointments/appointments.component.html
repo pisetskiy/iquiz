@@ -21,10 +21,21 @@
             <div class="card-body ">
               <h5 class="card-title limited-lines">{{ appointment.quiz?.title }}</h5>
               <div class="card-text">
-                Срок сдачи: {{ appointment.deadline | date : 'dd.MM.yyyy' }}
-              </div>
-              <div class="card-text">
                 Статус: {{ states[appointment.state || ''] }}
+              </div>
+              <div class="card-text" *ngIf="appointment.state === 'CREATED' || appointment.state === 'EXPIRED'">
+                Срок сдачи: <strong>{{ appointment.deadline | date : 'dd.MM.yyyy' }}</strong>
+              </div>
+              <div class="card-text" *ngIf="appointment?.state === 'STARTED'">
+                Дано ответов: <strong>{{ appointment.answersCount }} / {{ appointment.quiz?.questionsCount }}</strong>
+              </div>
+              <div class="card-text" *ngIf="appointment?.state === 'PASSED'">
+                Верных ответов: <strong>{{ appointment.trueAnswersCount }} / {{ appointment.quiz?.questionsCount }}</strong>
+              </div>
+              <div class="card-text" *ngIf="appointment?.state === 'PASSED'">
+                Тестирование начато: <strong>{{ appointment.startDate | date : 'hh:mm dd.MM.yyyy' }}</strong>
+                <br>
+                Тестирование окончено: <strong>{{ appointment.endDate | date : 'hh:mm dd.MM.yyyy' }}</strong>
               </div>
             </div>
             <div class="card-footer">

@@ -1,0 +1,7 @@
+<ng-container *ngIf="!stopped">
+  {{ duration$ | async | date : 'mm:ss'}}
+</ng-container>
+<ng-container *ngIf="stopped">
+  00:00
+</ng-container>
+

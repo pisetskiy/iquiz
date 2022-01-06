@@ -10,21 +10,31 @@
       <div class="row">
         <div *ngFor="let appointment of filteredAppointments$ | async; index as i; trackBy: trackByFn"
              class="appointments__card col-lg-6">
-          <div class="card text-dark bg-light" [ngClass]="{ 'no-actions': !hasActions(appointment) }">
+          <div class="card text-dark bg-light">
             <div class="card-body ">
               <h5 class="card-title limited-lines">{{ appointment.quiz?.title }}</h5>
               <div class="card-text">
                 Статус: <strong>{{ statesMap[appointment.state || ''] }}</strong>
               </div>
-              <div class="card-text">
+              <div class="card-text" *ngIf="appointment.state === 'CREATED' || appointment.state === 'EXPIRED'">
                 Срок сдачи: <strong>{{ appointment.deadline | date : 'dd.MM.yyyy' }}</strong>
+              </div>
+              <div class="card-text" *ngIf="appointment?.state === 'STARTED'">
+                Дано ответов: <strong>{{ appointment.answersCount }} / {{ appointment.quiz?.questionsCount }}</strong>
+              </div>
+              <div class="card-text" *ngIf="appointment?.state === 'PASSED'">
+                Верных ответов: <strong>{{ appointment.trueAnswersCount }} / {{ appointment.quiz?.questionsCount }}</strong>
+              </div>
+              <div class="card-text" *ngIf="appointment?.state === 'PASSED'">
+                Тестирование начато: <strong>{{ appointment.startDate | date : 'hh:mm dd.MM.yyyy' }}</strong>
+                <br>
+                Тестирование окончено: <strong>{{ appointment.endDate | date : 'hh:mm dd.MM.yyyy' }}</strong>
               </div>
             </div>
             <div class="card-footer">
-              <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="isCreated(appointment)"
-                      [disabled]="load" (click)="start(appointment.id)">Начать</button>
-              <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="isStarted(appointment)"
-                      [disabled]="load" (click)="continue(appointment.id)">Продолжить</button>
+              <button type="button" class="btn btn-sm btn-outline-primary" [disabled]="load" (click)="toExam(appointment.id)">
+                К тесту
+              </button>
             </div>
           </div>
         </div>

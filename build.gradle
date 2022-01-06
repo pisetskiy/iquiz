@@ -3,25 +3,25 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 
-    id 'pmd'
-    id 'checkstyle'
+//    id 'pmd'
+//    id 'checkstyle'
 }
 
-pmd {
-    consoleOutput = true
-    toolVersion = '6.40.0'
-    rulesMinimumPriority = 5
-    ruleSets = []
-    ruleSetFiles = files('/configuration/checkstyle/ruleset.xml')
-    sourceSets = [sourceSets.main]
-}
+//pmd {
+//    consoleOutput = true
+//    toolVersion = '6.40.0'
+//    rulesMinimumPriority = 5
+//    ruleSets = []
+//    ruleSetFiles = files('/configuration/checkstyle/ruleset.xml')
+//    sourceSets = [sourceSets.main]
+//}
 
-checkstyle {
-    configFile = file('/configuration/checkstyle/checkstyle.xml')
-    ignoreFailures = false
-    maxWarnings = 0
-    checkstyleTest.enabled = false
-}
+//checkstyle {
+//    configFile = file('/configuration/checkstyle/checkstyle.xml')
+//    ignoreFailures = false
+//    maxWarnings = 0
+//    checkstyleTest.enabled = false
+//}
 
 group = 'by.pisetskiy'
 version = '0.0.1-SNAPSHOT'

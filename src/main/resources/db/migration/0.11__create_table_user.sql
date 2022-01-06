@@ -18,7 +18,7 @@ INSERT INTO job_position(id, title)
 VALUES (1000, 'Администратор IT-решений');
 
 INSERT INTO employee(id, job_position_id, first_name, middle_name, last_name, email)
-VALUES (1000, 1000, 'Иван', 'Иванович', 'Иванов', 'iiivanov@it.company.com');
+VALUES (1000, 1000, 'Иван', 'Иванович', 'Иванов', 'admin@gmail.com');
 
 INSERT INTO user(id, username, password, role, employee_id)
-VALUES (1000, 'iiivanov@it.company.com', '{noop}Adminus-Maximus', 'ADMIN', 1000);
+VALUES (1000, 'admin@gmail.com', '{noop}SUPER_PASSWORD', 'ADMIN', 1000);

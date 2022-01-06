@@ -16,13 +16,17 @@ export class AppComponent {
     { title: 'Должности', fragment: 'positions', adminOnly: true },
   ];
 
-  links$: Observable<any[]>
+  links$: Observable<any[]>;
+  name$: Observable<string>;
 
   constructor(
     private userService: UserService
   ) {
     this.links$ = this.userService.user.pipe(map(user => {
       return this.links.filter(l => !l.adminOnly || user.isAdmin)
+    }))
+    this.name$ = this.userService.user.pipe(map(user => {
+      return `${user.lastName} ${user.firstName[0]}.${user.middleName[0]}.`
     }))
   }
 }

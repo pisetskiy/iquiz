@@ -3,7 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerI18n, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDatepickerI18n,
+  NgbModule
+} from '@ng-bootstrap/ng-bootstrap';
 import { PositionsComponent } from './positions/positions.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EmployeesComponent } from './employees/employees.component';
@@ -20,6 +25,8 @@ import { DatepickerAdapterService } from './service/datepicker-adapter.service';
 import { DatepickerTranslationService } from './service/datepicker-translation.service';
 import { MyComponent } from './my/my.component';
 import { AppointmentStatesRadioComponent } from './appointment-states-radio/appointment-states-radio.component';
+import { ExamComponent } from './exam/exam.component';
+import { TimerComponent } from './timer/timer.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +40,8 @@ import { AppointmentStatesRadioComponent } from './appointment-states-radio/appo
     AppointmentsComponent,
     MyComponent,
     AppointmentStatesRadioComponent,
+    ExamComponent,
+    TimerComponent,
   ],
   imports: [
     BrowserModule,

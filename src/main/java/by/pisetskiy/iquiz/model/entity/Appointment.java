@@ -2,17 +2,14 @@ package by.pisetskiy.iquiz.model.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Formula;
 
 @Getter
 @Setter
@@ -39,5 +36,22 @@ public class Appointment extends BaseEntity {
     private LocalDateTime startDate;
     @Column(columnDefinition = "DATETIME")
     private LocalDateTime endDate;
+
+    @Formula("(select count(a.id) from answer a where a.appointment_id = id)")
+    private Integer answersCount;
+    @Formula("(select count(a.id) from answer a where a.appointment_id = id and a.is_true = 1)")
+    private Integer trueAnswersCount;
+
+    @Transient
+    public boolean isExpired() {
+        return deadline.isBefore(LocalDate.now());
+    }
+
+    @Transient
+    public boolean isInProcess() {
+        return state == AppointmentState.STARTED
+                && endDate == null
+                && startDate.plusMinutes(quiz.getTimeLimit()).isAfter(LocalDateTime.now());
+    }
 
 }

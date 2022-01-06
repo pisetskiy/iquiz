@@ -15,12 +15,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @Entity
+@SuperBuilder
 public class Answer extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -42,12 +44,4 @@ public class Answer extends BaseEntity {
     private LocalDateTime answerDate;
 
     private Boolean isTrue;
-
-    public void addVariant(Variant variant) {
-        this.variants.add(variant);
-    }
-
-    public void removeVariant(Variant variant) {
-        this.variants.remove(variant);
-    }
 }

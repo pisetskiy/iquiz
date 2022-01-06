@@ -5,10 +5,7 @@ import static by.pisetskiy.iquiz.util.IQuizUtil.mapper;
 
 import by.pisetskiy.iquiz.api.request.QuestionRequest;
 import by.pisetskiy.iquiz.api.request.VariantRequest;
-import by.pisetskiy.iquiz.model.entity.Question;
-import by.pisetskiy.iquiz.model.entity.QuestionType;
-import by.pisetskiy.iquiz.model.entity.Quiz;
-import by.pisetskiy.iquiz.model.entity.Variant;
+import by.pisetskiy.iquiz.model.entity.*;
 import by.pisetskiy.iquiz.model.repository.QuestionRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +25,12 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         return repository.findAll();
     }
 
-    public List<Question> findByQuizId(Long quizId) {
+    public List<Question> findAllByQuizId(Long quizId) {
         return repository.findAllByQuizId(quizId);
+    }
+
+    public List<Question> findAllForAppointment(Appointment appointment) {
+        return repository.findAllByQuizIdWithVariants(appointment.getQuiz().getId());
     }
 
     @Override

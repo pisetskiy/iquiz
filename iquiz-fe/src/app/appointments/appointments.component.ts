@@ -99,7 +99,7 @@ export class AppointmentsComponent implements OnInit {
     this.employeeService.find(this.employeeId as number)
       .subscribe(employee => this.employee = employee);
     this.quizService.findForEmployee(this.employeeId as number)
-      .subscribe(quizzes => this.quizzes = quizzes);
+      .subscribe(quizzes => this.quizzes = quizzes.filter(q => q.questionsCount > 0));
 
     this.loadAppointments();
   }

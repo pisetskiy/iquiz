@@ -5,16 +5,24 @@ import by.pisetskiy.iquiz.model.entity.BaseEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class IQuizUtil {
+
+    public static <T extends BaseEntity> T find(List<T> elements, Long id) {
+        return elements.stream().filter(e -> Objects.equals(e.getId(), id)).findFirst().orElse(null);
+    }
+
+    public static <T extends BaseEntity> List<T> find(Collection<T> elements, Collection<Long> ids) {
+        var set = new HashSet<>(ids);
+        return elements.stream().filter(e -> set.contains(e.getId())).collect(Collectors.toList());
+    }
 
     public static <T, U> List<U> map(List<T> elements, Function<T, U> mapper) {
         return elements.stream().map(mapper).collect(Collectors.toList());

@@ -22,12 +22,6 @@
 }
 
 .card {
-  &.no-actions {
-    padding-bottom: 3.5rem;
-    .card-footer {
-      display: none;
-    }
-  }
   &-footer {
     :not(:last-child) {
       margin-right: 0.5rem;

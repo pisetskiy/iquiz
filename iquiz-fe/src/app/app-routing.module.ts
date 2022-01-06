@@ -7,11 +7,26 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { MyComponent } from './my/my.component';
 import { UserService } from './service/user.service';
+import { ExamComponent } from './exam/exam.component';
 
 const routes: Routes = [
   {
     path: 'my',
-    component: MyComponent
+    children: [
+      {
+        path: '',
+        component: MyComponent
+      },
+      {
+        path: ':appointmentId',
+        children: [
+          {
+            path: 'exam',
+            component: ExamComponent
+          }
+        ]
+      }
+    ]
   },
   {
     path: 'quizzes',

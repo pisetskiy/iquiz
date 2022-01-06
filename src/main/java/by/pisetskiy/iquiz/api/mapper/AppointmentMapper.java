@@ -1,13 +1,7 @@
 package by.pisetskiy.iquiz.api.mapper;
 
-import by.pisetskiy.iquiz.api.dto.AppointmentDto;
-import by.pisetskiy.iquiz.api.dto.EmployeeDto;
-import by.pisetskiy.iquiz.api.dto.PositionDto;
-import by.pisetskiy.iquiz.api.dto.QuizDto;
-import by.pisetskiy.iquiz.model.entity.Appointment;
-import by.pisetskiy.iquiz.model.entity.Employee;
-import by.pisetskiy.iquiz.model.entity.JobPosition;
-import by.pisetskiy.iquiz.model.entity.Quiz;
+import by.pisetskiy.iquiz.api.dto.*;
+import by.pisetskiy.iquiz.model.entity.*;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -31,6 +25,17 @@ public interface AppointmentMapper {
     PositionDto position(JobPosition position);
 
     QuizDto quiz(Quiz quiz);
+
+    @Mapping(target = "question", source = "answer.question.id")
+    AnswerDto answer(Answer answer);
+
+    default Long question(Question question) {
+        return question.getId();
+    }
+
+    default Long variant(Variant variant) {
+        return variant.getId();
+    }
 
     default String date(LocalDate date) {
         return date != null ? formatDate(date) : null;

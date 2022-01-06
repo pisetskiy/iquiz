@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Appointment } from '../domain/appointment';
 import { BehaviorSubject, combineLatest, finalize, map } from 'rxjs';
 import { AppointmentService } from '../service/appointment.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my',
@@ -39,9 +40,6 @@ export class MyComponent implements OnInit {
     EXPIRED: 'Просрочено',
   };
   readonly trackByFn = (index: number, appointment: Appointment) => appointment.id;
-  readonly hasActions = (a: Appointment) => a.state === 'CREATED' || a.state === 'STARTED'
-  readonly isCreated = (a: Appointment) => a.state === 'CREATED'
-  readonly isStarted = (a: Appointment) => a.state === 'STARTED'
 
   load = false;
   appointments$ = new BehaviorSubject<Appointment[]>([]);
@@ -51,6 +49,7 @@ export class MyComponent implements OnInit {
     .pipe(map((data: any[]) => this.filterAppointmentsByQuery(data[0], data[1], data[2])));
 
   constructor(
+    private router: Router,
     private service: AppointmentService,
   ) { }
 
@@ -60,17 +59,13 @@ export class MyComponent implements OnInit {
 
   loadAppointments(): void {
     this.load = true;
-    this.service.user()
+    this.service.findAllForUser()
       .pipe(finalize(() => this.load = false))
       .subscribe(appointments => this.appointments$.next(appointments));
   }
 
-  start(id: number | null): void {
-
-  }
-
-  continue(id: number | null): void {
-
+  toExam(id: number | null): void {
+    this.router.navigateByUrl(`/my/${id}/exam`)
   }
 
   private filterAppointmentsByQuery(appointments: Appointment[], query: string, state: string): Appointment[] {

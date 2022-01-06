@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Appointment } from '../domain/appointment';
+import { Answer } from '../domain/answer';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,23 @@ export class AppointmentService {
     return this.http.post<Appointment>(this.api + `/${id}`, appointment);
   }
 
-  user(): Observable<Appointment[]> {
+  findAllForUser(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(this.user_api);
+  }
+
+  findForUser(id: number): Observable<Appointment> {
+    return this.http.get<Appointment>(this.user_api + `/${id}`);
+  }
+
+  start(id: number): Observable<Appointment> {
+    return this.http.post<Appointment>(this.user_api + `/${id}/start`, null);
+  }
+
+  stop(id: number): Observable<Appointment> {
+    return this.http.post<Appointment>(this.user_api + `/${id}/stop`, null);
+  }
+
+  answer(id: number, request: any): Observable<Answer> {
+    return this.http.post<Answer>(this.user_api + `/${id}/answers`, request);
   }
 }
