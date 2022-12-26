@@ -1,0 +1,28 @@
+<div class="flex flex-container vertical flex-center">
+  <div class="h3 text-center mt-4">Авторизация</div>
+
+  <form [formGroup]="loginForm" class="col-md-6 col-xl-4 mt-3">
+    <div class="form-group">
+      <label for="email">Почта</label>
+      <input type="email" id="email" formControlName="email" class="form-control" placeholder="Введите почту"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль</label>
+      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Введите пароль"/>
+    </div>
+    <div class="form-group flex-container horizontal flex-center">
+      <button class="flex btn btn-link" [disabled]="load" (click)="goToSignup()">
+        Зарегистрироваться
+      </button>
+      <button class="flex btn btn-primary" [disabled]="load" (click)="validateAndSave()">
+        Войти
+      </button>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="validationErrors.length">
+      <div *ngFor="let error of validationErrors"> {{ error }}</div>
+    </div>
+
+  </form>
+
+</div>

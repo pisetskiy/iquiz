@@ -30,7 +30,7 @@ public class QuestionController implements BaseController<QuestionDto, QuestionR
     public List<QuestionDto> findAll(Map<String, String> params) {
         var quizId = Long.parseLong(params.getOrDefault("quizId", "-1"));
         var questions = quizId != -1 ? service.findAllByQuizId(quizId) : service.findAll();
-        return map(questions, mapper::toListDto);
+        return map(questions, mapper::toDetailDto);
     }
 
     @Override

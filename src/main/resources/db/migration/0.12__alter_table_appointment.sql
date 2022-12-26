@@ -1,4 +1,0 @@
-ALTER TABLE appointment
-    MODIFY deadline DATE NOT NULL,
-    MODIFY start_date DATETIME(0) DEFAULT NULL,
-    MODIFY end_date DATETIME(0) DEFAULT NULL;

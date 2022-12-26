@@ -6,6 +6,7 @@
 
 body {
   height: 100vh;
+  background-color: #e8eeeb;
 }
 
 .flex {
@@ -17,6 +18,16 @@ body {
     &.vertical {
       height: 100%;
       flex-direction: column;
+      &.flex-center {
+        align-items: center;
+      }
     }
+
+    &.horizontal {
+      &.flex-center {
+        justify-content: center;
+      }
+    }
+
   }
 }

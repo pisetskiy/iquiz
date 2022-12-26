@@ -14,5 +14,8 @@ import lombok.ToString;
 public class QuizRequest extends BaseRequest {
 
     private String title;
-    private Integer timeLimit;
+    private String description;
+    private String bannerFile;
+    private Boolean isActive;
+    private Boolean isPublic;
 }

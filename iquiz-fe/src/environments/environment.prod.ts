@@ -1,4 +1,5 @@
 export const environment = {
-  production: true,
-  api_prefix: '/api/v1',
+  production: false,
+  server: 'http://localhost:8180',
+  api_prefix: 'http://localhost:8180/api/v1',
 };

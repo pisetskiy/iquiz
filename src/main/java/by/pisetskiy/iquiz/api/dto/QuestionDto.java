@@ -15,5 +15,6 @@ public class QuestionDto extends BaseDto {
     private Long quizId;
     private String content;
     private String type;
+    private Boolean isActive;
     private List<VariantDto> variants;
 }

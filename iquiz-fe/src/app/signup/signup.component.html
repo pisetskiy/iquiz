@@ -1,0 +1,35 @@
+<div class="flex flex-container vertical flex-center">
+  <div class="h3 text-center mt-4">Регистрация</div>
+
+  <form [formGroup]="signupForm" class="col-md-6 col-xl-4 mt-3">
+    <div class="form-group">
+      <label for="username">Имя</label>
+      <input type="text" id="username" formControlName="username" class="form-control" placeholder="Введите имя"/>
+    </div>
+    <div class="form-group">
+      <label for="email">Почта</label>
+      <input type="email" id="email" formControlName="email" class="form-control" placeholder="Введите почту"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль</label>
+      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Введите пароль"/>
+    </div>
+    <div class="form-group flex-container horizontal flex-center">
+      <button class="flex btn btn-link" [disabled]="load || redirectMessage.length" (click)="goToLogin(false)">
+        Авторизоваться
+      </button>
+      <button class="flex btn btn-primary" [disabled]="load || redirectMessage.length" (click)="validateAndSave()">
+        Зарегистрироваться
+      </button>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="validationErrors.length">
+      <div *ngFor="let error of validationErrors"> {{ error }}</div>
+    </div>
+    <div class="alert alert-success" *ngIf="redirectMessage">
+      {{ redirectMessage }}
+    </div>
+
+  </form>
+
+</div>

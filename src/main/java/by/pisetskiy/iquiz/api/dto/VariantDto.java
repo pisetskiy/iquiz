@@ -11,6 +11,6 @@ import lombok.ToString;
 @ToString
 public class VariantDto extends BaseDto {
 
-    private String value;
+    private String content;
     private Boolean isTrue;
 }

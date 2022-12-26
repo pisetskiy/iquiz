@@ -1,0 +1,6 @@
+<div class="btn-group btn-group-toggle" ngbRadioGroup name="state" [(ngModel)]="model"
+     (ngModelChange)="stateSelect.emit($event)">
+  <label ngbButtonLabel *ngFor="let state of states" [ngClass]="state.class">
+    <input ngbButton type="radio" [value]="state.value"> {{ state.title }}
+  </label>
+</div>

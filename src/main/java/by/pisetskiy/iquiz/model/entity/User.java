@@ -1,14 +1,12 @@
 package by.pisetskiy.iquiz.model.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -19,13 +17,26 @@ import java.util.List;
 @SuperBuilder
 public class User extends BaseEntity implements UserDetails, CredentialsContainer {
 
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
+    private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserRole role;
-    @OneToOne(optional = false)
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    @Builder.Default
+    private UserRole role = UserRole.USER;
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean isActive = Boolean.FALSE;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastLogin;
+    @Column(columnDefinition = "TIMESTAMP", nullable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
 
     @Override
     public List<UserRole> getAuthorities() {

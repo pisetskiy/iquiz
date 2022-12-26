@@ -1,10 +1,12 @@
 <div class="quizzes">
   <div class="container-fluid quizzes__header">
     <div>
-      <button type="button" class="btn btn-primary" (click)="addQuiz(quiz_form)">Создать</button>
+      <button type="button" class="btn btn-primary" (click)="addQuiz(quiz_form)">Создать викторину</button>
     </div>
 
-    <app-search placeholder="Поиск теста" (search)="filterQuizzes($event)"></app-search>
+    <app-search placeholder="Поиск викторины" (search)="filterQuizzes($event)"></app-search>
+
+    <app-quiz-toggle (stateSelect)="state$.next($event)"></app-quiz-toggle>
   </div>
 
   <div class="quizzes__body">
@@ -14,15 +16,21 @@
              class="quizzes__card col-lg-6">
           <div class="card text-dark bg-light">
             <div class="card-body ">
-              <h5 class="card-title limited-lines">{{ quiz.title }}</h5>
-              <div class="card-text">Вопросов: {{ quiz.questionsCount || 0 }}</div>
-              <div class="card-text">Ограничение по времени: {{ quiz.timeLimit }} мин.</div>
+              <h5 class="card-title limited-lines" [ngClass]="{'inactive': !quiz.isActive}">{{ quiz.title }}</h5>
+              <div class="card-text" [ngClass]="{'inactive': !quiz.isActive}">Вопросов: {{ quiz.questionCount || 0 }}</div>
+<!--              <div class="card-text">Ограничение по времени: {{ quiz.timeLimit }} мин.</div>-->
             </div>
             <div class="card-footer">
-              <button type="button" (click)="toQuestions(quiz.id)" [disabled]="load"
+              <button type="button" (click)="toQuestions(quiz.id)" [disabled]="load" *ngIf="isUserQuiz(quiz, null)"
                       class="btn btn-sm btn-outline-primary">К вопросам</button>
-              <button type="button" (click)="updateQuiz(quiz.id, quiz_form)" [disabled]="load"
+              <button type="button" (click)="updateQuiz(quiz.id, quiz_form)" [disabled]="load" *ngIf="isUserQuiz(quiz, null)"
                       class="btn btn-sm btn-outline-primary">Изменить</button>
+              <button type="button" (click)="startQuiz(quiz)" [disabled]="load" *ngIf="isActive(quiz)"
+                      class="btn btn-sm btn-outline-primary">Провести</button>
+              <button type="button" (click)="toFavorites(quiz)" [disabled]="load" *ngIf="!quiz.isFavorite"
+                      class="btn btn-sm btn-outline-primary">Избранное</button>
+              <button type="button" (click)="fromFavorites(quiz)" [disabled]="load" *ngIf="quiz.isFavorite"
+                      class="btn btn-sm btn-primary">Избранное</button>
             </div>
           </div>
         </div>
@@ -42,18 +50,31 @@
     <form [formGroup]="quizForm">
       <input type="hidden" formControlName="id">
       <div class="form-group">
-        <label for="title">Название теста</label>
+        <label for="title">Название викторины</label>
         <input type="text" id="title" formControlName="title" class="form-control"/>
       </div>
       <div class="form-group">
-        <label for="timeLimit" class="form-label">Ограничение по времени: {{ quizForm.value?.timeLimit }} мин.</label>
-        <input id="timeLimit" type="range" formControlName="timeLimit" class="custom-range" min="10" max="60" step="5">
+        <label for="description">Описаине викторины</label>
+        <textarea formControlName="description" class="form-control" id="description" cols="30" rows="5"></textarea>
+      </div>
+<!--      <div class="form-group">-->
+<!--        <label for="bannerFile">Обложка викторины</label>-->
+<!--        <input type="file" class="form-control-file" id="bannerFile" formControlName="bannerFile" (change)="onFileChange($event)">-->
+<!--      </div>-->
+      <div class="form-group form-check-inline">
+        <input type="checkbox" id="isActive" formControlName="isActive" class="form-check-input">
+        <label class="form-check-label" for="isActive">Викторина активна</label>
+      </div>
+      <div class="form-group form-check-inline">
+        <input type="checkbox" id="isPublic" formControlName="isPublic" class="form-check-input">
+        <label class="form-check-label" for="isPublic">Викторина опубликована</label>
       </div>
     </form>
 
-    <ul class="list-unstyled invalid-feedback" *ngIf="validationErrors.length">
-      <li *ngFor="let error of validationErrors"> {{ error }}</li>
-    </ul>
+    <div class="alert alert-danger" *ngIf="validationErrors.length">
+      <div *ngFor="let error of validationErrors"> {{ error }}</div>
+    </div>
+
   </div>
   <div class="modal-footer">
     <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndSave(true)">К вопросам</button>

@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 public class AppointmentDto extends BaseDto {
 
-    private EmployeeDto employee;
+    private UserDto employee;
     private QuizDto quiz;
     private List<QuestionDto> questions;
     private List<AnswerDto> answers;

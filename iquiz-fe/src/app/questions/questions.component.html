@@ -1,13 +1,17 @@
 <div class="questions">
-  <div class="container-fluid questions__title">
-    <h4>{{ quiz?.title }} ({{ quiz?.timeLimit + 'мин.'}})</h4>
-  </div>
   <div class="container-fluid questions__header">
     <div>
       <button type="button" class="btn btn-primary" (click)="addQuestion(question_form)">Создать</button>
     </div>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="startImport(question_import_form)">Загрузить из файла</button>
+    </div>
 
     <app-search placeholder="Поиск вопроса" (search)="filterQuestions($event)"></app-search>
+  </div>
+
+  <div class="container-fluid questions__title">
+    <h4>{{ quiz?.title }}</h4>
   </div>
 
   <div class="questions__body">
@@ -17,12 +21,18 @@
              class="questions__card col-md-6 col-xl-4">
           <div class="card text-dark bg-light">
             <div class="card-body ">
-              <h5 class="card-title">{{ question.type === 'SINGLE' ? 'Один верный ответ' : 'Несколько верных ответов' }}</h5>
+<!--              <h5 class="card-title">{{ question.type === 'SINGLE' ? 'Один верный ответ' : 'Несколько верных ответов' }}</h5>-->
               <div class="card-text">
-                <p class="limited-lines">
+                <p class="limited-lines" [ngClass]="{'inactive': !question.isActive}">
                   {{ question.content }}
                 </p>
               </div>
+              <ul class="list-unstyled">
+                <li *ngFor="let variant of question.variants"
+                    [ngClass]="{'true-variant': variant.isTrue, 'inactive': !question.isActive}">
+                  * {{ variant.content }}
+                </li>
+              </ul>
             </div>
             <div class="card-footer">
               <button type="button" (click)="updateQuestion(question.id, question_form)" [disabled]="load"
@@ -49,18 +59,23 @@
       <div class="form-group">
         <textarea formControlName="content" class="form-control" id="content" cols="30" rows="5"></textarea>
       </div>
-      <div class="form-group">
-        <div class="form-check form-check-inline" *ngFor="let questionType of questionTypes">
-          <input formControlName="type"
-                 class="form-check-input"
-                 type="radio"
-                 id="{{ 'id_' + questionType.value }}"
-                 [value]="questionType.value">
-          <label class="form-check-label" for="{{ 'id_' + questionType.value }}">{{ questionType.title }}</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addVariant()">Добавить вариант ответа</button>
+
+<!--      <div class="form-group">-->
+<!--        <div class="form-check form-check-inline" *ngFor="let questionType of questionTypes">-->
+<!--          <input formControlName="type"-->
+<!--                 class="form-check-input"-->
+<!--                 type="radio"-->
+<!--                 id="{{ 'id_' + questionType.value }}"-->
+<!--                 [value]="questionType.value">-->
+<!--          <label class="form-check-label" for="{{ 'id_' + questionType.value }}">{{ questionType.title }}</label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="form-group">-->
+<!--        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addVariant()">Добавить вариант ответа</button>-->
+<!--      </div>-->
+      <div class="form-group form-check-inline">
+        <input type="checkbox" id="isActive" formControlName="isActive" class="form-check-input">
+        <label class="form-check-label" for="isActive">Отображать вопрос</label>
       </div>
       <ng-container formArrayName="variants">
         <div class="form-group" *ngFor="let variantForm of variantsForms?.controls; index as i;" formGroupName="{{i}}">
@@ -70,21 +85,49 @@
                 <input type="checkbox" formControlName="isTrue">
               </div>
             </div>
-            <input type="text" formControlName="value" class="form-control" placeholder="Вариант ответа">
+            <input type="text" formControlName="content" class="form-control" placeholder="Вариант ответа">
             <input type="hidden" formControlName="id">
-            <div class="input-group-append">
-              <button class="btn btn-outline-danger" type="button" (click)="removeVariant(i)">Удалить</button>
-            </div>
+<!--            <div class="input-group-append">-->
+<!--              <button class="btn btn-outline-danger" type="button" (click)="removeVariant(i)">Удалить</button>-->
+<!--            </div>-->
           </div>
         </div>
       </ng-container>
     </form>
 
-    <ul class="list-unstyled invalid-feedback" *ngIf="validationErrors.length">
-      <li *ngFor="let error of validationErrors"> {{ error }}</li>
-    </ul>
+    <div class="alert alert-danger" *ngIf="validationErrors.length">
+      <div *ngFor="let error of validationErrors"> {{ error }}</div>
+    </div>
   </div>
   <div class="modal-footer">
     <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndSave()">Сохранить</button>
+  </div>
+</ng-template>
+
+<ng-template #question_import_form let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Загрузить вопросы</h4>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')">
+      <span>&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="importForm">
+      <div class="form-group">
+        <label for="file">Ввыберите файл</label>
+        <input type="file" class="form-control-file" id="file" (change)="onFileChange($event)">
+      </div>
+      <div class="form-group">
+        <label for="text">Данные для импорта</label>
+        <textarea formControlName="text" class="form-control" id="text" cols="30" rows="5"></textarea>
+      </div>
+    </form>
+
+    <div class="alert alert-danger" *ngIf="importValidationErrors.length">
+      <div *ngFor="let error of importValidationErrors"> {{ error }}</div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="load" class="btn btn-outline-primary" (click)="validateAndImport()">Загрузить</button>
   </div>
 </ng-template>

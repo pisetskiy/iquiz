@@ -38,10 +38,6 @@ textarea.form-control {
   }
 }
 
-.invalid-feedback {
-  display: block;
-}
-
 .card-text {
   height: 4rem;
 }
@@ -53,4 +49,12 @@ textarea.form-control {
   -webkit-line-clamp: 3; /* number of lines to show */
   line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.true-variant {
+  color: #28a745;
+}
+
+.inactive {
+  text-decoration: line-through;
 }

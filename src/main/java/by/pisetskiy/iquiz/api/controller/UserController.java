@@ -1,28 +1,39 @@
 package by.pisetskiy.iquiz.api.controller;
 
-import by.pisetskiy.iquiz.api.dto.EmployeeDto;
-import by.pisetskiy.iquiz.api.mapper.EmployeeMapper;
+import by.pisetskiy.iquiz.api.dto.UserDto;
+import by.pisetskiy.iquiz.api.dto.SecurityDto;
+import by.pisetskiy.iquiz.api.mapper.UserMapper;
+import by.pisetskiy.iquiz.api.request.SignupRequest;
+import by.pisetskiy.iquiz.service.UserService;
 import by.pisetskiy.iquiz.util.Security;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static by.pisetskiy.iquiz.api.RestEndpoints.API_PREFIX;
-import static by.pisetskiy.iquiz.api.RestEndpoints.USER;
+import static by.pisetskiy.iquiz.api.RestEndpoints.*;
 
 @RestController
-@RequestMapping(API_PREFIX + USER)
 @RequiredArgsConstructor
 public class UserController {
 
-    private final EmployeeMapper mapper;
+    private final UserMapper mapper;
+    private final UserService service;
 
-    @GetMapping
-    public EmployeeDto getUser() {
+    @PostMapping(API_PREFIX + SIGNUP)
+    public SecurityDto signup(@RequestBody SignupRequest request) {
+        var message = service.signup(request);
+        return new SecurityDto(message.name());
+    }
+
+    @GetMapping(API_PREFIX + LOGIN)
+    public UserDto login() {
         var user = Security.getUser();
-        var employee = user.getEmployee();
-        return mapper.toDetailDto(employee);
+        return mapper.toDto(user);
+    }
+
+    @GetMapping(API_PREFIX + USER)
+    public UserDto getUser() {
+        var user = Security.getUser();
+        return mapper.toDto(user);
     }
 
 }

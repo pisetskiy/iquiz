@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, filter, finalize, Observable, of, switchMap } from 'rxjs';
-import { EmployeeService } from './employee.service';
-import { Employee } from '../domain/employee';
+import {LoginService} from "../login/login.service";
+import {User} from "../domain/user";
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,10 @@ import { Employee } from '../domain/employee';
 export class UserService implements CanActivate {
 
   load = false;
-  user$ = new BehaviorSubject<Employee>({} as Employee);
+  user$ = new BehaviorSubject<User>({} as User);
 
   constructor(
-    private service: EmployeeService
+    private service: LoginService
   ) {}
 
   get user() {
@@ -21,10 +21,11 @@ export class UserService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this._user().pipe(switchMap(user => of(user.isAdmin)));
+    return this._user().pipe(switchMap(user => of(user.isActive)));
+    return of(false);
   }
 
-  private _user(): Observable<Employee> {
+  private _user(): Observable<User> {
     if (!this.user$.value.id && !this.load) {
       this.load = true
       this.service.user()

@@ -29,10 +29,6 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         return repository.findAllByQuizId(quizId);
     }
 
-    public List<Question> findAllForAppointment(Appointment appointment) {
-        return repository.findAllByQuizIdWithVariants(appointment.getQuiz().getId());
-    }
-
     @Override
     public Question findById(Long id) {
         var question = repository.getById(id);
@@ -46,6 +42,7 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
                 .quiz(mapper(Quiz::new).apply(request.getQuizId()))
                 .content(request.getContent())
                 .type(QuestionType.valueOf(request.getType()))
+                .isActive(request.getIsActive())
                 .build();
         question.addVariants(map(request.getVariants(), this::variant));
 
@@ -57,6 +54,7 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
         var question = repository.getById(id);
         question.setContent(request.getContent());
         question.setType(QuestionType.valueOf(request.getType()));
+        question.setIsActive(request.getIsActive());
         question.removeVariants(new ArrayList<>(question.getVariants()));
         question.addVariants(map(request.getVariants(), this::variant));
         return repository.save(question);
@@ -65,7 +63,7 @@ public class QuestionService implements BaseService<Question, QuestionRequest> {
     private Variant variant(VariantRequest request) {
         return Variant.builder()
                 .id(request.getId())
-                .value(request.getValue())
+                .content(request.getContent())
                 .isTrue(request.getIsTrue())
                 .build();
     }

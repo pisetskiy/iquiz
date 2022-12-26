@@ -11,6 +11,6 @@ import lombok.ToString;
 @ToString
 public class VariantRequest extends BaseRequest {
 
-    private String value;
+    private String content;
     private Boolean isTrue;
 }

@@ -14,18 +14,18 @@ export class QuestionService {
   constructor(private http: HttpClient) { }
 
   findAll(quizId: number): Observable<Question[]> {
-    return this.http.get<Question[]>(this.api + `?quizId=${quizId}`);
+    return this.http.get<Question[]>(this.api + `?quizId=${quizId}`, {withCredentials : true});
   }
 
   find(id: number): Observable<Question> {
-    return this.http.get<Question>(this.api + `/${id}`);
+    return this.http.get<Question>(this.api + `/${id}`, {withCredentials : true});
   }
 
   create(question: Question): Observable<Question> {
-    return this.http.post<Question>(this.api, question);
+    return this.http.post<Question>(this.api, question, {withCredentials : true});
   }
 
   update(id: number, question: Question): Observable<Question> {
-    return this.http.post<Question>(this.api + `/${id}`, question);
+    return this.http.post<Question>(this.api + `/${id}`, question, {withCredentials : true});
   }
 }

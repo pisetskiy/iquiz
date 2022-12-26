@@ -1,0 +1,111 @@
+<div class="container container-fluid" *ngIf="game">
+
+  <ng-container *ngIf="game.state === 'STARTED'">
+    <div class="h4 text-center mt-4">{{ game?.quiz?.title }}</div>
+    <div class="h5 text-center">
+      Вопросов: {{ game.quiz?.questionCount}}
+    </div>
+    <div class="row flex-row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <form *ngIf="question" [formGroup]="answerForm">
+              <div class="form-group" formGroupName="question">
+                <input type="hidden" formControlName="id">
+                <textarea formControlName="content" class="form-control" rows="5" readonly></textarea>
+              </div>
+              <ng-container formArrayName="variants" *ngIf="question.type === 'SINGLE' && state !== 'SHOW_QUESTION'">
+                <div class="form-group" *ngFor="let vf of variantsForms?.controls; index as i;" formGroupName="{{i}}">
+                  <input type="hidden" formControlName="id">
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName="content" readonly>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <input type="radio" name="checked" formControlName="checked" [value]="true">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  </ng-container>
+
+  <ng-container *ngIf="game.state === 'CREATED'">
+    <div class="h4 text-center mt-4">{{ game?.quiz?.title }}</div>
+    <div class="h5 text-center">
+      Вопросов: {{ game.quiz?.questionCount}}
+    </div>
+    <div class="h5 text-center">
+      Ссылка для подключения: <a href="#/game/{{code}}" target="_blank">http://iquiz.by/#/game/{{code}}</a>
+    </div>
+    <br>
+    <div class="row flex-row">
+      <div class="col-lg-4" *ngIf="isGameOwner">
+        <div class="h5 text-center">Настройки проведения викторины</div>
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="settingsForm">
+              <div class="form-group">
+                <label for="maxParticipantCount">Максимальное число участников</label>
+                <input type="number" class="form-control" id="maxParticipantCount" formControlName="maxParticipantCount">
+              </div>
+              <div class="form-group">
+                <label for="questionDisplayTime">Время отображения вопроса (сек.)</label>
+                <input type="number" class="form-control" id="questionDisplayTime" formControlName="questionDisplayTime">
+              </div>
+              <div class="form-group">
+                <label for="answerWaitingTime">Время на ответ (сек.)</label>
+                <input type="number" class="form-control" id="answerWaitingTime" formControlName="answerWaitingTime">
+              </div>
+
+            </form>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-success" (click)="startGame()">Начать викторину</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-4">
+        <div class="h5 text-center">Присоединиться к участию</div>
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="participantForm">
+              <div class="form-group">
+                <input type="hidden" class="form-control" id="id" formControlName="id">
+              </div>
+              <div class="form-group">
+                <label for="username">Имя участника</label>
+                <input type="text" class="form-control" id="username" formControlName="username">
+              </div>
+              <div class="form-group">
+                <label for="avatar">Цвет аватара</label>
+                <input type="color" class="form-control" id="avatar" formControlName="avatar">
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary" (click)="joinGame()">Присоединиться</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="h5 text-center">Список участников виткорины</div>
+        <div class="card participant" *ngFor="let participant of game.participants">
+          <div class="participant-name">
+            {{participant.username}}
+          </div>
+          <div class="participant-avatar" [ngStyle]="{'backgroundColor': participant.avatar}"></div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

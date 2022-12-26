@@ -5,5 +5,6 @@ export interface Question extends Model {
   quizId: number;
   content: string;
   type: string;
+  isActive: boolean;
   variants: Variant[];
 }

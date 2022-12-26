@@ -1,10 +1,15 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Quiz } from '../domain/quiz';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, combineLatest, finalize, map, Subject } from 'rxjs';
-import { QuizService } from '../service/quiz.service';
-import { Router } from '@angular/router';
+import {Component, OnInit, TemplateRef} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {Quiz} from '../domain/quiz';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {BehaviorSubject, combineLatest, finalize, map, Subject} from 'rxjs';
+import {QuizService} from '../service/quiz.service';
+import {Router} from '@angular/router';
+import {UserService} from "../service/user.service";
+import {User} from "../domain/user";
+import {query} from "@angular/animations";
+import {GameService} from "../service/game.service";
+import {ParticipantService} from "../service/participant.service";
 
 @Component({
   selector: 'app-quizzes',
@@ -13,23 +18,27 @@ import { Router } from '@angular/router';
 })
 export class QuizzesComponent implements OnInit {
 
-  private static readonly ADD_MODAL_TITLE = 'Добавить тест';
-  private static readonly EDIT_MODAL_TITLE = 'Изменить тест';
+  private static readonly ADD_MODAL_TITLE = 'Добавить викторину';
+  private static readonly EDIT_MODAL_TITLE = 'Изменить викторину';
 
   private static readonly QUIZ_VALIDATOR: ValidatorFn = (control: AbstractControl) => {
     let result: ValidationErrors = {};
     let value = control.value;
     if (!value.title) {
-      result['title_required'] = 'Введите название теста.';
+      result['title_required'] = 'Введите название викторины.';
     }
     if (value.title.length > 70) {
-      result['title_too_long'] = 'Название теста не должно превышать 70 символов.';
+      result['title_too_long'] = 'Название викторины не должно превышать 70 символов.';
     }
-    if (!value.timeLimit) {
-      result['time_limit_required'] = 'Введите ограничение по времени.';
+
+    if (value.description) {
+      if (value.description.length > 250) {
+        result['description_too_long'] = 'Описание викторины не должно превышать 250 символов.';
+      }
     }
-    if (value.timeLimit < 10 || 60 < value.timeLimit) {
-      result['time_limit_invalid'] = 'Ограничение по времени должно быть в промежутке от 10 до 60 мин.';
+
+    if (value.bannerFile) {
+
     }
 
     return result;
@@ -45,19 +54,26 @@ export class QuizzesComponent implements OnInit {
 
   quizzes$: Subject<Quiz[]> = new BehaviorSubject<Quiz[]>([]);
   query$: Subject<string> = new BehaviorSubject<string>('');
-  filteredQuizzes$ = combineLatest([this.quizzes$, this.query$])
-    .pipe(map((data: any[]) => this.filterQuizzesByQuery(data[0], data[1])));
+  state$ = new BehaviorSubject<string>('all');
+  filteredQuizzes$ = combineLatest([this.quizzes$, this.query$, this.state$, this.user.user$])
+    .pipe(map((data: any[]) => this.filterQuizzesByQuery(data[0], data[1], data[2], data[3])));
 
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     private service: QuizService,
     private router: Router,
+    private user: UserService,
+    private games: GameService,
+    private participants: ParticipantService,
   ) {
     this.quizForm = this.fb.group({
       id: this.fb.control(null),
       title: this.fb.control(''),
-      timeLimit: this.fb.control(20),
+      description: this.fb.control(''),
+      bannerFile: this.fb.control(''),
+      isActive: this.fb.control(''),
+      isPublic: this.fb.control(''),
     }, {
       validators: QuizzesComponent.QUIZ_VALIDATOR
     })
@@ -82,12 +98,40 @@ export class QuizzesComponent implements OnInit {
     this.query$.next(query);
   }
 
+  startQuiz(quiz: Quiz): void {
+    this.load = true;
+    this.games.create({
+      quizId: quiz.id
+    })
+      .pipe(finalize(() => this.load = false))
+      .subscribe(game => {
+        this.participants.joinGame(
+          game.code,
+          {
+            username: this.user.user$.value.username,
+            avatar: this.getRandomColor2()
+          })
+        this.router.navigateByUrl(`/game/${game.code}`);
+      })
+  }
+
+  private getRandomColor2() {
+    var length = 6;
+    var chars = '0123456789ABCDEF';
+    var hex = '#';
+    while (length--) hex += chars[(Math.random() * 16) | 0];
+    return hex;
+  }
+
   addQuiz(form: TemplateRef<any>): void {
     this.openQuizForm({
         id: null,
         title: '',
-        timeLimit: 20,
-      } as Quiz,
+        description: null,
+        bannerFile: null,
+        isActive: true,
+        isPublic: false,
+      } as unknown as Quiz,
       QuizzesComponent.ADD_MODAL_TITLE,
       form
     );
@@ -104,6 +148,7 @@ export class QuizzesComponent implements OnInit {
     if (this.quizForm.status === 'VALID') {
       this.validationErrors = [];
       let quiz = this.quizForm.value;
+      console.log(quiz);
       this.load = true;
       (quiz.id ? this.service.update(quiz.id, quiz) : this.service.create(quiz))
         .pipe(finalize(() => this.load = false))
@@ -119,22 +164,75 @@ export class QuizzesComponent implements OnInit {
     this.quizForm.setValue({
       id: quiz.id,
       title: quiz.title,
-      timeLimit: quiz.timeLimit
+      description: quiz.description,
+      bannerFile: quiz.bannerFile,
+      isActive: quiz.isActive,
+      isPublic: quiz.isPublic,
     });
     this.modalRef = this.modalService.open(form);
     this.modalRef.result
       .then(res => {
         res.toQuestions ? this.toQuestions(res.id) : this.loadQuizzes()
       })
-      .catch(() => {});
+      .catch(() => {
+      });
   }
 
-  private filterQuizzesByQuery(quizzes: Quiz[], query: string): Quiz[] {
+  private filterQuizzesByQuery(quizzes: Quiz[], query: string, state: string, user: User): Quiz[] {
     if (query) {
       let regexp = new RegExp(query, 'i');
-      return quizzes.filter(q => regexp.test(q.title));
+      quizzes = quizzes.filter(q => regexp.test(q.title));
+    }
+    if (state === 'all') {
+      quizzes = quizzes.filter(q => this.isActiveAndPublic(q) || this.isUserQuiz(q, user))
+    }
+    if (state === 'user') {
+      quizzes = quizzes.filter(q => this.isUserQuiz(q, user));
+    }
+    if (state === 'favorites') {
+      quizzes = quizzes.filter(q => this.isActiveAndPublic(q) || this.isUserQuiz(q, user))
+      quizzes = quizzes.filter(q => q.isFavorite);
     }
 
     return quizzes;
+  }
+
+  isUserQuiz(quiz: Quiz, user: User | null): boolean {
+    if (!user) {
+      user = this.user.user$.value;
+    }
+    return quiz.user.id === user.id;
+  }
+
+  private isActiveAndPublic(quiz: Quiz): boolean {
+    return quiz.isPublic && quiz.isActive;
+  }
+
+  isActive(quiz: Quiz): boolean {
+    return quiz.isActive
+  }
+
+  toFavorites(quiz: Quiz) {
+    this.load = true;
+    this.service.toFavorites(quiz.id as number)
+      .pipe(finalize(() => this.load = false))
+      .subscribe(result => quiz.isFavorite = result.isFavorite);
+  }
+
+  fromFavorites(quiz: Quiz) {
+    this.load = true;
+    this.service.fromFavorites(quiz.id as number)
+      .pipe(finalize(() => this.load = false))
+      .subscribe(result => quiz.isFavorite = result.isFavorite);
+  }
+
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+
+      const file = event.target.files[0];
+
+      console.log(file);
+
+    }
   }
 }

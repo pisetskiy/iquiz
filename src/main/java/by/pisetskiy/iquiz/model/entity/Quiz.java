@@ -1,10 +1,12 @@
 package by.pisetskiy.iquiz.model.entity;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,14 +23,25 @@ import org.hibernate.annotations.Formula;
 @SuperBuilder
 public class Quiz extends BaseEntity {
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
+    @Column(nullable = false)
     private String title;
-    @Column(columnDefinition = "SMALLINT")
-    private Integer timeLimit;
-    @Formula("(select count(qs.id) from question qs where qs.quiz_id = id)")
-    private int questionsCount;
-
-    @ManyToMany(mappedBy = "quizzes")
-    @ToString.Exclude
+    private String description;
+    private String bannerFile;
+    @Column(nullable = false)
     @Builder.Default
-    private Set<JobPosition> positions = new HashSet<>();
+    private Boolean isActive = Boolean.TRUE;
+    @Builder.Default
+    private Boolean isPublic = Boolean.FALSE;
+    @Column(columnDefinition = "TIMESTAMP", nullable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
+    @Formula("(select count(qs.id) from question qs where qs.quiz_id = id and qs.is_active = 1)")
+    private int questionCount;
+
+    @Transient
+    private Favorites favorites;
 }

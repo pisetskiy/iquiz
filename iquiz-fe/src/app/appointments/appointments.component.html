@@ -27,10 +27,10 @@
                 Срок сдачи: <strong>{{ appointment.deadline | date : 'dd.MM.yyyy' }}</strong>
               </div>
               <div class="card-text" *ngIf="appointment?.state === 'STARTED'">
-                Дано ответов: <strong>{{ appointment.answersCount }} / {{ appointment.quiz?.questionsCount }}</strong>
+                Дано ответов: <strong>{{ appointment.answersCount }} / {{ appointment.quiz?.questionCount }}</strong>
               </div>
               <div class="card-text" *ngIf="appointment?.state === 'PASSED'">
-                Верных ответов: <strong>{{ appointment.trueAnswersCount }} / {{ appointment.quiz?.questionsCount }}</strong>
+                Верных ответов: <strong>{{ appointment.trueAnswersCount }} / {{ appointment.quiz?.questionCount }}</strong>
               </div>
               <div class="card-text" *ngIf="appointment?.state === 'PASSED'">
                 Тестирование начато: <strong>{{ appointment.startDate | date : 'hh:mm dd.MM.yyyy' }}</strong>

@@ -1,0 +1,23 @@
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1000, 1000, 'Фильмы и мультфильмы 1', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1001, 1000, 'Фильмы и мультфильмы 2', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1002, 1000, 'Фильмы и мультфильмы 3', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1003, 1000, 'Фильмы и мультфильмы 4', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1004, 1000, 'Фильмы и мультфильмы 5', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1005, 1000, 'Фильмы и мультфильмы 6', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1006, 1000, 'Фильмы и мультфильмы 7', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1007, 1000, 'Фильмы и мультфильмы 8', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1008, 1000, 'Фильмы и мультфильмы 9', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1009, 1000, 'Фильмы и мультфильмы 10', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (1010, 1000, 'Фильмы и мультфильмы 11', TRUE, TRUE);
+
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2000, 1001, 'Величайште рок хиты 1', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2001, 1001, 'Величайште рок хиты 2', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2002, 1001, 'Величайште рок хиты 3', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2003, 1001, 'Величайште рок хиты 4', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2004, 1001, 'Величайште рок хиты 5', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2005, 1001, 'Величайште рок хиты 6', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2006, 1001, 'Величайште рок хиты 7', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2007, 1001, 'Величайште рок хиты 8', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2008, 1001, 'Величайште рок хиты 9', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2009, 1001, 'Величайште рок хиты 10', TRUE, TRUE);
+INSERT INTO quiz(id, user_id, title, is_active, is_public) VALUES (2010, 1001, 'Величайште рок хиты 11', TRUE, TRUE);

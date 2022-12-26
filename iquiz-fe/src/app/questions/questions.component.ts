@@ -47,16 +47,14 @@ export class QuestionsComponent implements OnInit {
     }
     let map: { [key: string]: boolean } = {};
     for (let variant of variants) {
-      if(!variant.value) {
-        result['variant_value_required'] = 'Необходимо ввести вариант ответа.';
-      }
-      if (variant.value.length > 30) {
+      if(!variant.content) {
+        result['variant_content_required'] = 'Необходимо ввести вариант ответа.';
+      } else if (variant.content.length > 30) {
         result['variant_too_long'] = 'Описание варианта ответа не должно превышать 30 символов.';
-      }
-      if (map[variant.value]) {
+      }else if (map[variant.content]) {
         result['repeated_variants'] = 'Вопрос не должен содержать повторяющиеся варианты.';
       }
-      map[variant.value] = true;
+      map[variant.content] = true;
     }
 
     return result;
@@ -72,8 +70,10 @@ export class QuestionsComponent implements OnInit {
   load: boolean = false;
   modalTitle: string = QuestionsComponent.ADD_MODAL_TITLE;
   validationErrors: string[] = [];
+  importValidationErrors: string[] = [];
   modalRef: NgbModalRef | null = null;
   questionForm: FormGroup;
+  importForm: FormGroup;
   variantsForms: FormArray;
   quizId: number = -1;
   quiz?: Quiz;
@@ -96,10 +96,15 @@ export class QuestionsComponent implements OnInit {
       'quizId': this.fb.control(null),
       'content': this.fb.control(''),
       'type': this.fb.control('SINGLE'),
+      'isActive': this.fb.control(true),
       'variants': this.variantsForms,
     }, {
       validators: QuestionsComponent.QUESTION_VALIDATOR
     });
+    this.importForm = this.fb.group({
+      'file': this.fb.control(null),
+      'text': this.fb.control(null)
+    })
   }
 
   ngOnInit(): void {
@@ -128,11 +133,25 @@ export class QuestionsComponent implements OnInit {
         quizId: this.quizId,
         content: '',
         type: 'SINGLE',
-        variants: []
+        isActive: true,
+        variants: [
+          this.emptyVariant(true),
+          this.emptyVariant(false),
+          this.emptyVariant(false),
+          this.emptyVariant(false),
+        ]
       } as Question,
       QuestionsComponent.ADD_MODAL_TITLE,
       content
     );
+  }
+
+  private emptyVariant(isTrue: boolean): Variant {
+    return {
+      id: null,
+      content: null,
+      isTrue: isTrue,
+    } as unknown as Variant;
   }
 
   updateQuestion(id: number | null, content: TemplateRef<any>): void {
@@ -177,7 +196,7 @@ export class QuestionsComponent implements OnInit {
   private buildVariantForm(variant: Variant): FormGroup {
     return this.fb.group({
       'id': this.fb.control(variant.id || null),
-      'value': this.fb.control(variant.value || ''),
+      'content': this.fb.control(variant.content || ''),
       'isTrue': this.fb.control(variant.isTrue || true)
     });
   }
@@ -189,6 +208,34 @@ export class QuestionsComponent implements OnInit {
     }
 
     return questions;
+  }
+
+  startImport(content: TemplateRef<any>) {
+    this.importValidationErrors = [];
+    this.importForm.setValue({
+      file: null,
+      text: null
+    });
+    this.modalRef = this.modalService.open(content);
+    this.modalRef.result.then(() => this.loadQuestions(), () => {});
+  }
+
+  validateAndImport() {
+    //todo: implement later
+    this.modalRef?.close('SAVED')
+  }
+
+  onFileChange(event: any) {
+    console.log(event.target.files[0]);
+    let file = event.target.files[0];
+    if (file.type === 'text/plain') {
+      let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        this.importForm.patchValue({text: fileReader.result});
+        console.log(fileReader.result);
+      }
+      fileReader.readAsText(file);
+    }
   }
 
 }

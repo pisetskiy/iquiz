@@ -1,9 +1,11 @@
 package by.pisetskiy.iquiz.service;
 
-import by.pisetskiy.iquiz.model.entity.Appointment;
-import by.pisetskiy.iquiz.model.entity.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 
 import static by.pisetskiy.iquiz.util.IQuizUtil.formatDate;
 
@@ -11,14 +13,12 @@ import static by.pisetskiy.iquiz.util.IQuizUtil.formatDate;
 @Service
 public class EmailService {
 
-    public void sendAccountCreatedEmail(Employee employee, String password) {
-        log.info("Account for user {} with login: {} and password: {}", employee, employee.getEmail(), password);
+    public void sendSignupEmail(String email, String username) {
+        var now = Instant.now().toEpochMilli();
+        var data = email + "," + username + "," + now;
+        var code = Base64Utils.encodeToUrlSafeString(data.getBytes(StandardCharsets.UTF_8));
+        var link = "https://iquiz.by/activate?code=" + code;
+        log.info("Account for user {} created, to activate account use this link {}", username, link);
     }
 
-    public void sendAppointmentCreatedEmail(Appointment appointment) {
-        log.info("You have to pass quiz {} until {}",
-                appointment.getQuiz().getTitle(),
-                formatDate(appointment.getDeadline())
-        );
-    }
 }
