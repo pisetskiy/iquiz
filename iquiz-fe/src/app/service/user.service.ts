@@ -22,7 +22,6 @@ export class UserService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this._user().pipe(switchMap(user => of(user.isActive)));
-    return of(false);
   }
 
   private _user(): Observable<User> {

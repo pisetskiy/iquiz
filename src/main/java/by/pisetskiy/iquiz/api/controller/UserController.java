@@ -24,12 +24,6 @@ public class UserController {
         return new SecurityDto(message.name());
     }
 
-    @GetMapping(API_PREFIX + LOGIN)
-    public UserDto login() {
-        var user = Security.getUser();
-        return mapper.toDto(user);
-    }
-
     @GetMapping(API_PREFIX + USER)
     public UserDto getUser() {
         var user = Security.getUser();
