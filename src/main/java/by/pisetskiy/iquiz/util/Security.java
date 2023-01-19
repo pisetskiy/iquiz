@@ -8,6 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @UtilityClass
 public class Security {
 
+    public static boolean isAuthenticated() {
+        return !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser");
+    }
+
     public static User getUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }

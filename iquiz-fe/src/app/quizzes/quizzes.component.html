@@ -6,7 +6,8 @@
 
     <app-search placeholder="Поиск викторины" (search)="filterQuizzes($event)"></app-search>
 
-    <app-quiz-toggle (stateSelect)="state$.next($event)"></app-quiz-toggle>
+    <app-quiz-toggle (stateSelect)="state$.next($event)" *ngIf="hasUser$ | async
+"></app-quiz-toggle>
   </div>
 
   <div class="quizzes__body">

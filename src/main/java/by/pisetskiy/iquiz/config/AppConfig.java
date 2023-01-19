@@ -38,6 +38,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/api/v1/signup").anonymous()
                 .mvcMatchers("/api/v1/games/**").permitAll()
+                .mvcMatchers("/api/v1/quizzes").permitAll()
                 .anyRequest().authenticated()
 
                 // 401-UNAUTHORIZED when anonymous user tries to access protected URLs

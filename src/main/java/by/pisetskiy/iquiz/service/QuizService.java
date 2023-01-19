@@ -12,6 +12,7 @@ import by.pisetskiy.iquiz.model.repository.FavoritesRepository;
 import by.pisetskiy.iquiz.model.repository.QuizRepository;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,12 +37,20 @@ public class QuizService implements BaseService<Quiz, QuizRequest> {
 
     public List<Quiz> findAll(Map<String, String> params) {
         List<Quiz> quizzes = repository.findAllEager();
-        Map<Long, Favorites> favorites = favoritesRepository.findAllByUser(Security.getUser())
-                .stream().collect(Collectors.toMap(favorites1 -> favorites1.getQuiz().getId(), favorites1 -> favorites1));
-        quizzes.forEach(quiz -> quiz.setFavorites(favorites.get(quiz.getId())));
+        Map<Long, Favorites> favorites = Collections.emptyMap();
+        if (Security.isAuthenticated()) {
+            favorites = favoritesRepository.findAllByUser(Security.getUser()).stream()
+                    .collect(Collectors.toMap(
+                            favorites1 -> favorites1.getQuiz().getId(),
+                            favorites1 -> favorites1
+                    ));
+        }
+        for (Quiz quiz : quizzes) {
+            quiz.setFavorites(favorites.get(quiz.getId()));
+        }
 
 
-        if (params.containsKey("user")) {
+        if (params.containsKey("user") && Security.isAuthenticated()) {
             return quizzes.stream().filter(quiz -> quiz.getUser().getId().equals(Security.getUser().getId())).collect(Collectors.toList());
         }
         if (params.containsKey("favorites")) {

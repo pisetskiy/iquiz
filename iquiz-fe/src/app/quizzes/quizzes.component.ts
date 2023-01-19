@@ -7,7 +7,6 @@ import {QuizService} from '../service/quiz.service';
 import {Router} from '@angular/router';
 import {UserService} from "../service/user.service";
 import {User} from "../domain/user";
-import {query} from "@angular/animations";
 import {GameService} from "../service/game.service";
 import {ParticipantService} from "../service/participant.service";
 
@@ -55,6 +54,7 @@ export class QuizzesComponent implements OnInit {
   quizzes$: Subject<Quiz[]> = new BehaviorSubject<Quiz[]>([]);
   query$: Subject<string> = new BehaviorSubject<string>('');
   state$ = new BehaviorSubject<string>('all');
+  hasUser$ = this.user.user$.pipe(map(user => !!user.id));
   filteredQuizzes$ = combineLatest([this.quizzes$, this.query$, this.state$, this.user.user$])
     .pipe(map((data: any[]) => this.filterQuizzesByQuery(data[0], data[1], data[2], data[3])));
 
@@ -99,6 +99,10 @@ export class QuizzesComponent implements OnInit {
   }
 
   startQuiz(quiz: Quiz): void {
+    if (!this.user.user$.value.id) {
+      this.redirectToLogin();
+      return;
+    }
     this.load = true;
     this.games.create({
       quizId: quiz.id
@@ -124,6 +128,10 @@ export class QuizzesComponent implements OnInit {
   }
 
   addQuiz(form: TemplateRef<any>): void {
+    if (!this.user.user$.value.id) {
+      this.redirectToLogin();
+      return;
+    }
     this.openQuizForm({
         id: null,
         title: '',
@@ -158,7 +166,7 @@ export class QuizzesComponent implements OnInit {
     }
   }
 
-  private openQuizForm(quiz: Quiz, modalTitle: string, form: TemplateRef<any>) {
+  openQuizForm(quiz: Quiz, modalTitle: string, form: TemplateRef<any>) {
     this.modalTitle = modalTitle;
     this.validationErrors = [];
     this.quizForm.setValue({
@@ -178,7 +186,7 @@ export class QuizzesComponent implements OnInit {
       });
   }
 
-  private filterQuizzesByQuery(quizzes: Quiz[], query: string, state: string, user: User): Quiz[] {
+  filterQuizzesByQuery(quizzes: Quiz[], query: string, state: string, user: User): Quiz[] {
     if (query) {
       let regexp = new RegExp(query, 'i');
       quizzes = quizzes.filter(q => regexp.test(q.title));
@@ -204,7 +212,7 @@ export class QuizzesComponent implements OnInit {
     return quiz.user.id === user.id;
   }
 
-  private isActiveAndPublic(quiz: Quiz): boolean {
+  isActiveAndPublic(quiz: Quiz): boolean {
     return quiz.isPublic && quiz.isActive;
   }
 
@@ -213,6 +221,10 @@ export class QuizzesComponent implements OnInit {
   }
 
   toFavorites(quiz: Quiz) {
+    if (!this.user.user$.value.id) {
+      this.redirectToLogin();
+      return;
+    }
     this.load = true;
     this.service.toFavorites(quiz.id as number)
       .pipe(finalize(() => this.load = false))
@@ -224,6 +236,10 @@ export class QuizzesComponent implements OnInit {
     this.service.fromFavorites(quiz.id as number)
       .pipe(finalize(() => this.load = false))
       .subscribe(result => quiz.isFavorite = result.isFavorite);
+  }
+
+  redirectToLogin() {
+    this.router.navigateByUrl("/login");
   }
 
   onFileChange(event: any) {
