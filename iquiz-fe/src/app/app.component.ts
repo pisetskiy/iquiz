@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { UserService } from './service/user.service';
-import { map, Observable } from 'rxjs';
+import {Component} from '@angular/core';
+import {UserService} from './service/user.service';
+import {map, Observable, tap} from 'rxjs';
 import {LoginService} from "./login/login.service";
 import {Router} from "@angular/router";
 
@@ -12,8 +12,8 @@ import {Router} from "@angular/router";
 export class AppComponent {
 
   private readonly links = [
-    { title: 'Викторины', fragment: 'quizzes' },
-    { title: 'Пользователи', fragment: 'users', adminOnly: true },
+    {title: 'Викторины', fragment: 'quizzes', authRequired: false, adminOnly: false},
+    {title: 'Пользователи', fragment: 'users', authRequired: true, adminOnly: true},
   ];
 
   links$: Observable<any[]>;
@@ -24,15 +24,18 @@ export class AppComponent {
     private loginService: LoginService,
     private router: Router
   ) {
-    this.links$ = this.userService.user.pipe(map(user => {
-      return this.links.filter(l => !l.adminOnly || user.role === 'ROLE_ADMIN')
-    }))
-    this.name$ = this.userService.user.pipe(map(user => {
-      return `${user.username}`
-    }))
+    this.userService.loadUser();
+    this.links$ = this.userService.user$
+      .pipe(map(user => {
+        return this.links.filter(l => (!l.authRequired || !!user.id) && (!l.adminOnly || user.role === 'ROLE_ADMIN'))
+      }))
+    this.name$ = this.userService.user$
+      .pipe(map(user => user.username));
   }
 
   logout(): void {
-    this.loginService.logout().subscribe(res => this.router.navigateByUrl('/login'));
+    this.loginService.logout()
+      .pipe(tap( () => this.userService.clearUser()))
+      .subscribe(res => this.router.navigateByUrl('/login'));
   }
 }

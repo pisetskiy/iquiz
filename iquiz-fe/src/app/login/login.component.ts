@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     // private service: LoginService,
     private service: LoginService,
+    private userService: UserService,
   ) {
     this.loginForm = this.fb.group({
       username: this.fb.control(null),
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit {
         .pipe(finalize(() => this.load = false))
         .subscribe((result: string) => {
           if (result === 'ok') {
+            this.userService.loadUser();
             this.router.navigateByUrl("/quizzes");
           } else {
             this.validationErrors = [LoginComponent.SERVER_MESSAGES[result]];

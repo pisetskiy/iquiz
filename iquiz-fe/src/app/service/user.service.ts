@@ -1,6 +1,17 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject, filter, finalize, Observable, of, switchMap } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
+import {
+  BehaviorSubject,
+  catchError,
+  every,
+  filter,
+  finalize, map,
+  Observable,
+  of,
+  onErrorResumeNext,
+  switchMap,
+  tap
+} from 'rxjs';
 import {LoginService} from "../login/login.service";
 import {User} from "../domain/user";
 
@@ -13,27 +24,26 @@ export class UserService implements CanActivate {
   user$ = new BehaviorSubject<User>({} as User);
 
   constructor(
-    private service: LoginService
-  ) {}
+    private loginService: LoginService
+  ) {
+  }
 
-  get user() {
-    return this._user();
+  loadUser() {
+    this.loginService.user()
+      .subscribe(
+        user => this.user$.next(user),
+        error => this.user$.next({} as User)
+      )
+  }
+
+  clearUser() {
+    this.user$.next({} as User);
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this._user().pipe(switchMap(user => of(user.isActive)));
-  }
-
-  private _user(): Observable<User> {
-    if (!this.user$.value.id && !this.load) {
-      this.load = true
-      this.service.user()
-        .pipe(finalize(() => this.load = false))
-        .subscribe(user => this.user$.next(user))
-    }
-    return this.user$.pipe(
-      filter(user => !!user.id),
-    );
+    return this.user$
+      .pipe(switchMap(user => of(user.isActive)))
+      .pipe(catchError(error => of(false)));
   }
 
 }
