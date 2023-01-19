@@ -54,7 +54,7 @@
             <form [formGroup]="settingsForm">
               <div class="form-group">
                 <label for="maxParticipantCount">Максимальное число участников</label>
-                <input type="number" class="form-control" id="maxParticipantCount" formControlName="maxParticipantCount">
+                <input type="number" class="form-control" id="maxParticipantCount" formControlName="maxParticipantCount" readonly>
               </div>
               <div class="form-group">
                 <label for="questionDisplayTime">Время отображения вопроса (сек.)</label>
@@ -66,14 +66,20 @@
               </div>
 
             </form>
+
+            <div class="alert alert-danger" *ngIf="settingValidationErrors.length">
+              <div *ngFor="let error of settingValidationErrors"> {{ error }}</div>
+            </div>
           </div>
           <div class="card-footer">
-            <button type="submit" class="btn btn-success" (click)="startGame()">Начать викторину</button>
+            <button type="submit" class="btn btn-success" (click)="startGame()">
+              Начать викторину
+            </button>
           </div>
         </div>
 
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-4" *ngIf="!isGameOwner">
         <div class="h5 text-center">Присоединиться к участию</div>
         <div class="card">
           <div class="card-body">
@@ -81,15 +87,24 @@
               <div class="form-group">
                 <input type="hidden" class="form-control" id="id" formControlName="id">
               </div>
+              <div class="form-group avatar">
+                <label class="avatar-label" for="avatar">Аватар</label>
+                <div class="avatar-image"
+                     [ngStyle]="{'background-color': participantForm.value.avatar}"
+                     (click)="changeAvatar()"
+                >
+                </div>
+                <input type="hidden" class="form-control" id="avatar" formControlName="avatar">
+              </div>
               <div class="form-group">
                 <label for="username">Имя участника</label>
                 <input type="text" class="form-control" id="username" formControlName="username">
               </div>
-              <div class="form-group">
-                <label for="avatar">Цвет аватара</label>
-                <input type="color" class="form-control" id="avatar" formControlName="avatar">
-              </div>
             </form>
+
+            <div class="alert alert-danger" *ngIf="participantValidationErrors.length">
+              <div *ngFor="let error of participantValidationErrors"> {{ error }}</div>
+            </div>
           </div>
           <div class="card-footer">
             <button type="submit" class="btn btn-primary" (click)="joinGame()">Присоединиться</button>

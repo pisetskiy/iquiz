@@ -4,7 +4,7 @@ import {GameService} from "../service/game.service";
 import {BehaviorSubject, finalize, Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {Game} from "../domain/game";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {ParticipantService} from "../service/participant.service";
 import {Participant} from "../domain/participant";
 import {Question} from "../domain/question";
@@ -16,13 +16,48 @@ import {Question} from "../domain/question";
 })
 export class GameComponent implements OnInit, OnDestroy {
 
+  private static readonly PARTICIPANT_VALIDATOR = (participants: Participant[]) =>{
+    return (control: AbstractControl) => {
+      let result: ValidationErrors = {};
+      let value = control.value;
+      if (!value.avatar) {
+        result['avatar_required'] = 'Выберите аватар участника.';
+      }
+      if (!value.username) {
+        result['username_required'] = 'Введите псевдоним участника.';
+      } else if (value.username.length > 30) {
+        result['username_too_long'] = 'Псевдоним не должен превышать 30 символов.';
+      } else if (participants.some(p => p.username.toLowerCase() === value.username.toLowerCase())) {
+        result['username_not_unique'] = 'Участник с указанным псевдонимом уже присоединился.';
+      }
+
+      return result;
+    }
+  }
+
+  private static readonly SETTINGS_VALIDATOR = (participants: Participant[]) => {
+    return (control: AbstractControl) => {
+      let result: ValidationErrors = {};
+
+      if (participants.length === 0) {
+        result['participants_missing'] = 'Невозможно начать викторину без участников.';
+      }
+
+      return result;
+    }
+  }
+
   load: boolean = false;
   code: string = '';
+  gameNotFound: boolean = false;
   game: Game | null = null;
   isGameOwner: boolean = false;
-  participant?: Participant;
   settingsForm: FormGroup;
+  settingValidationErrors: string[] = [];
+
+  participant?: Participant;
   participantForm: FormGroup;
+  participantValidationErrors: string[] = [];
 
   subscription?: Subscription;
 
@@ -60,11 +95,12 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.code = this.route.snapshot.params['code'];
-    this.subscribeToEvents();
+    this.loadGame()
+    // this.subscribeToEvents();
   }
 
   ngOnDestroy(): void {
-    this.games.closeEventSource();
+    // this.games.closeEventSource();
   }
 
   subscribeToEvents() {
@@ -74,9 +110,22 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  loadGame() {
+    this.load = true;
+    this.games.find(Number.parseInt(this.code))
+      .pipe(finalize(() => this.load = false))
+      .subscribe(
+        game => this.displayGame(game),
+        error => this.gameNotFound = true
+      );
+  }
+
   displayGame(game: Game) {
     this.game = game;
     this.isGameOwner = this.game.user.id === this.user.user$.value.id;
+    this.settingsForm.setValidators(GameComponent.SETTINGS_VALIDATOR(game.participants));
+    this.participantForm.setValidators(GameComponent.PARTICIPANT_VALIDATOR(game.participants));
+    this.displayParticipant();
   }
 
   displayParticipant() {
@@ -100,24 +149,40 @@ export class GameComponent implements OnInit, OnDestroy {
 
   }
 
+  changeAvatar() {
+    this.participantForm.setValue(
+      Object.assign(this.participantForm.value, { avatar: this.getRandomColor2() })
+    );
+  }
+
   joinGame() {
-    let participant = this.participantForm.value;
-    participant.gameId = this.game?.id;
-    this.load = true;
-    this.participants.joinGame(this.code, participant)
-      .pipe(finalize(() => this.load = false))
-      .subscribe(participant => this.participant = participant);
+    if (this.participantForm.status === 'VALID') {
+      this.participantValidationErrors = [];
+      let participant = Object.assign({}, this.participantForm.value);
+      participant.gameId = this.game?.id;
+      this.load = true;
+      this.participants.joinGame(this.code, participant)
+        .pipe(finalize(() => this.load = false))
+        .subscribe(participant => this.participant = participant);
+    } else {
+      this.participantValidationErrors = Object.values(this.participantForm.errors as {});
+    }
   }
 
   startGame() {
-    this.load = true;
-    let game = {
-      state: 'STARTED',
-      settings: this.settingsForm.value
+    if (this.settingsForm.status === 'VALID') {
+      this.settingValidationErrors = [];
+      this.load = true;
+      let game = {
+        state: 'STARTED',
+        settings: this.settingsForm.value
+      }
+      this.games.update(Number.parseInt(this.code), game)
+        .pipe(finalize(() => this.load = false))
+        .subscribe(game => {})
+    } else {
+      this.settingValidationErrors = Object.values(this.settingsForm.errors as {});
     }
-    this.games.update(Number.parseInt(this.code), game)
-      .pipe(finalize(() => this.load = false))
-      .subscribe(game => {})
   }
 
   processEvent(event: any) {
