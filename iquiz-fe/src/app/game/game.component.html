@@ -1,11 +1,25 @@
+<!--<div>is game over: {{isGameOwner}}</div>-->
+<!--<div>is game participant: {{isGameParticipant}}</div>-->
+
+<!--<div *ngIf="isGameOwner">-->
+<!--  <button class="btn btn-primary" (click)="nextQuestion()">Показать вопрос</button>-->
+<!--  <button class="btn btn-primary" (click)="showVariants()">Показать варианты ответа</button>-->
+<!--  <button class="btn btn-primary" (click)="showAnswers()">Показать ответы</button>-->
+<!--</div>-->
+
+<!--<div>{{answer?.participantId}}</div>-->
+<!--<div>{{answer?.questionId}}</div>-->
+<!--<div>{{answer?.variantId}}</div>-->
+<!--<div>{{answer?.isTrue}}</div>-->
+
 <div class="container container-fluid" *ngIf="game">
 
   <ng-container *ngIf="game.state === 'STARTED'">
     <div class="h4 text-center mt-4">{{ game?.quiz?.title }}</div>
     <div class="h5 text-center">
-      Вопросов: {{ game.quiz?.questionCount}}
+      Вопрос: {{ questionNumber + 1}} / {{ game.quiz?.questionCount}}
     </div>
-    <div class="row flex-row">
+    <div class="row flex-row" *ngIf="state === 'SHOW_QUESTION' || state === 'SHOW_VARIANTS' || state === 'SHOW_ANSWERS'">
       <div class="col-lg-4">
         <div class="card">
           <div class="card-body">
@@ -14,12 +28,16 @@
                 <input type="hidden" formControlName="id">
                 <textarea formControlName="content" class="form-control" rows="5" readonly></textarea>
               </div>
-              <ng-container formArrayName="variants" *ngIf="question.type === 'SINGLE' && state !== 'SHOW_QUESTION'">
+              <ng-container
+                formArrayName="variants" *ngIf="question.type === 'SINGLE' && state !== 'SHOW_QUESTION'"
+              >
                 <div class="form-group" *ngFor="let vf of variantsForms?.controls; index as i;" formGroupName="{{i}}">
                   <input type="hidden" formControlName="id">
-                  <div class="input-group">
-                    <input type="text" class="form-control" formControlName="content" readonly>
-                    <div class="input-group-append">
+                  <input type="hidden" formControlName="isTrue">
+                  <div class="input-group" >
+                    <input type="text" class="form-control" formControlName="content" readonly
+                           [ngClass]="{'valid': isValidVariant(vf), 'invalid': isInvalidVariant(vf)}">
+                    <div class="input-group-append" *ngIf="!isGameOwner && state === 'SHOW_VARIANTS'">
                       <div class="input-group-text">
                         <input type="radio" name="checked" formControlName="checked" [value]="true">
                       </div>
@@ -28,6 +46,16 @@
                 </div>
               </ng-container>
             </form>
+          </div>
+
+          <div class="card-footer" *ngIf="(state === 'SHOW_VARIANTS' || state === 'SHOW_ANSWERS') && !isGameOwner">
+            <button type="submit" class="btn btn-success" [disabled]="!!answer" (click)="sendAnswer()">
+              Ответить
+            </button>
+          </div>
+          <div class="card-footer" *ngIf="(state == 'SHOW_VARIANTS' || state == 'SHOW_ANSWERS') && isGameOwner">
+            Получено ответов: {{countQuestionAnswers(question)}}
+            <ng-container *ngIf="state == 'SHOW_ANSWERS'">Правильных: {{countQuestionTrueAnswers(question)}}</ng-container>
           </div>
         </div>
 
@@ -121,6 +149,29 @@
         </div>
       </div>
     </div>
+  </ng-container>
+
+  <ng-container *ngIf="game.state === 'FINISHED' || game.state === 'STOPPED'">
+    <div class="h4 text-center mt-4">{{ game?.quiz?.title }}</div>
+    <div class="h5 text-center">
+      Вопросов: {{ game.quiz?.questionCount}}
+    </div>
+    <div class="row flex-row">
+      <div class="col-lg-4">
+
+        <div class="h5 text-center">Результаты участников виткорины</div>
+        <div class="card participant" *ngFor="let participant of game.participants">
+          <div class="participant-avatar" [ngStyle]="{'backgroundColor': participant.avatar}"></div>
+          <div class="participant-name">
+            {{participant.username}}
+          </div>
+          <div class="participant-result">
+            Правильных ответов: {{countParticipantTrueAnswers(participant)}}
+          </div>
+        </div>
+      </div>
+    </div>
+
   </ng-container>
 
 </div>

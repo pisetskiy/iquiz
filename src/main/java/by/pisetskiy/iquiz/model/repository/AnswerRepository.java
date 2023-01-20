@@ -9,5 +9,12 @@ import java.util.List;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
+    @Query(value = "select a " +
+            "from Answer a " +
+            "join fetch a.game " +
+            "join fetch a.question " +
+            "join fetch a.participant " +
+            "join fetch a.variant " +
+            "where a.game = :game")
     List<Answer> findAllByGame(Game game);
 }

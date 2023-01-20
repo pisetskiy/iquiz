@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 public class AnswerRequest extends BaseRequest {
 
-    private Long question;
-    private Set<Long> variants = new HashSet<>();
-
+    private Long questionId;
+    private Long participantId;
+    private Long variantId;
 }

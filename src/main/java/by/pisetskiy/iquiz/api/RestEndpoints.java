@@ -12,6 +12,7 @@ public class RestEndpoints {
     public static final String FAVORITES = "/favorites";
     public static final String GAMES = "/games";
     public static final String PARTICIPANTS = "/participants";
+    public static final String ANSWERS = "/answers";
     public static final String USER = "/user";
     public static final String SIGNUP = "/signup";
 }

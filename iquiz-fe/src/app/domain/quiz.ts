@@ -13,5 +13,4 @@ export interface Quiz extends Model {
   updatedAt: string;
   questionCount: number;
   isFavorite: boolean;
-  timeLimit: number;
 }

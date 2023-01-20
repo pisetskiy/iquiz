@@ -5,6 +5,8 @@ import { Question } from '../domain/question';
 import { environment } from 'src/environments/environment';
 import {Game} from "../domain/game";
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import {Participant} from "../domain/participant";
+import {Answer} from "../domain/answer";
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +19,6 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
 
-  findAll(quizId: number): Observable<Game[]> {
-    return this.http.get<Game[]>(this.api, {withCredentials : true});
-  }
-
-  find(id: number): Observable<Game> {
-    return this.http.get<Game>(this.api + `/${id}`, {withCredentials : true});
-  }
-
   create(game: any): Observable<Game> {
     return this.http.post<Game>(this.api, game, {withCredentials : true});
   }
@@ -33,9 +27,9 @@ export class GameService {
     return this.http.post<Game>(this.api + `/${id}`, question, {withCredentials : true});
   }
 
-  getSocketEvents(gameCode: string): Observable<any> {
+  getGameEvents(code: string): Observable<any> {
     return new Observable((observer) => {
-      let url = this.api + `/${gameCode}/events`;
+      let url = this.api + `/${code}/events`;
       this.eventSource = new EventSourcePolyfill(url, { withCredentials: true });
 
       this.eventSource.onmessage = (event) => {
@@ -43,9 +37,38 @@ export class GameService {
       };
 
       this.eventSource.onerror = (error) => {
+        observer.error(error);
         this.closeEventSource();
       };
     });
+  }
+
+  addParticipant(code: string, participant: Participant) {
+    return this.http.post<Participant>(this.api + `/${code}/participants`, participant, {withCredentials : true});
+  }
+
+  updateParticipant(code: string, participantId: number, participant: Participant) {
+    return this.http.put<Participant>(this.api + `/${code}/participants/${participantId}`, participant, {withCredentials : true});
+  }
+
+  startGame(code: string) {
+    return this.http.post<void>(this.api + `/${code}/start`, {}, {withCredentials : true});
+  }
+
+  showQuestion(code: string, questionId: number) {
+    return this.http.post<void>(this.api + `/${code}/questions/${questionId}/showQuestion`, {}, {withCredentials : true});
+  }
+
+  showVariants(code: string, questionId: number) {
+    return this.http.post<void>(this.api + `/${code}/questions/${questionId}/showVariants`, {}, {withCredentials : true});
+  }
+
+  addAnswer(code: string, questionId: number, answer: Answer) {
+    return this.http.post<Answer>(this.api + `/${code}/questions/${questionId}/addAnswer`, answer, {withCredentials : true});
+  }
+
+  showAnswers(code: string, questionId: number) {
+    return this.http.post<void>(this.api + `/${code}/questions/${questionId}/showAnswers`, {}, {withCredentials : true});
   }
 
   closeEventSource(): void {

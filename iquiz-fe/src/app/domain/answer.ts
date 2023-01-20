@@ -1,7 +1,9 @@
 import { Model } from './model';
 
 export interface Answer extends Model {
-  question: number;
-  variants: number[];
+  gameId: number;
+  questionId: number;
+  participantId: number;
+  variantId: number;
   isTrue: boolean;
 }

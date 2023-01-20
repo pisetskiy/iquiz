@@ -13,8 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 public class AnswerDto extends BaseDto {
 
-    private Long question;
-    private List<Long> variants;
+    private Long gameId;
+    private Long questionId;
+    private Long participantId;
+    private Long variantId;
     private Boolean isTrue;
 
 }

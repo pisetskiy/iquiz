@@ -25,7 +25,6 @@ import { DatepickerAdapterService } from './service/datepicker-adapter.service';
 import { DatepickerTranslationService } from './service/datepicker-translation.service';
 import { MyComponent } from './my/my.component';
 import { AppointmentStatesRadioComponent } from './appointment-states-radio/appointment-states-radio.component';
-import { ExamComponent } from './exam/exam.component';
 import { TimerComponent } from './timer/timer.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
@@ -44,7 +43,6 @@ import { GameComponent } from './game/game.component';
     AppointmentsComponent,
     MyComponent,
     AppointmentStatesRadioComponent,
-    ExamComponent,
     TimerComponent,
     SignupComponent,
     LoginComponent,

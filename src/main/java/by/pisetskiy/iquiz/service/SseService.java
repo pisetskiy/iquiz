@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -40,6 +41,7 @@ public class SseService {
     }
 
     @SneakyThrows
+    @Async
     public void sendMessage(String code, String messageType, Object data) {
         ObjectNode message = jsonMapper.createObjectNode();
         message.set("messageType", new TextNode(messageType));
@@ -60,6 +62,7 @@ public class SseService {
     }
 
     @SneakyThrows
+    @Async
     public void sendMessage(String code, String messageType, Object data, SseEmitter emitter) {
         ObjectNode message = jsonMapper.createObjectNode();
         message.set("messageType", new TextNode(messageType));
